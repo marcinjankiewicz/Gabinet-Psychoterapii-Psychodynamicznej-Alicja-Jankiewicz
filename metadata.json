@@ -1,0 +1,6 @@
+{
+  "name": "Psychoterapia Alicja Jankiewicz",
+  "description": "Profesjonalny gabinet psychoterapii psychodynamicznej w Gdańsku. Zadbaj o swój dobrostan w bezpiecznej i wspierającej przestrzeni.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

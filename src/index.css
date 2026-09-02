@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #455a65; /* Slate Blue */
+  --color-brand-secondary: #4c6455; /* Sage Green */
+  --color-brand-accent: #cbe6d4; /* Light Sage Green */
+  --color-brand-charcoal: #1b1c1c; /* Neutral Charcoal */
+  --color-brand-muted: #5a5f63; /* Charcoal Variant */
+  --color-brand-bg: #fbf9f8; /* Warm Sand Page Background */
+  --color-brand-card: #f6f3f2; /* Soft Neutral Surface Card */
+
+  --font-serif: "Source Serif 4", Georgia, ui-serif, serif;
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  
+  --shadow-soft-lift: 0 10px 40px -10px rgba(93, 115, 126, 0.08);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-charcoal);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+}
+

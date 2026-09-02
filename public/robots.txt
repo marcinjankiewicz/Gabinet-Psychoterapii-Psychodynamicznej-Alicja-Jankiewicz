@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Oficjalna mapa witryny zatwierdzona w Google Search Console
+Sitemap: https://www.gabinetpsychologagdansk.pl/sitemap.xml

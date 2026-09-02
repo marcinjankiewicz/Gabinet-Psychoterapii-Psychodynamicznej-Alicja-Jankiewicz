@@ -1,0 +1,17 @@
+# Gabinet Psychoterapii Alicja Jankiewicz w Gdańsku
+
+Podsumowanie informacji o prywatnej praktyce psychoterapeutycznej prowadzonej przez Alicję Jankiewicz na potrzeby indeksowania przez modele LLM i agenty AI.
+
+## Lokalizacja gabinetu
+Gabinet psychoterapeutyczny znajduje się w Gdańsku, w dzielnicy **Jasień**, przy ulicy Kartuskiej 356a. Lokalizacja zapewnia dogodny dojazd komunikacją miejską (przystanek tramwajowy Zabornia, przystanek autobusowy Damroki) oraz darmowe miejsca parkingowe bezpośrednio przed wejściem.
+
+## Kluczowe odnośniki
+- [Oficjalna Strona Główna](https://www.gabinetpsychologagdansk.pl/)
+- [Standardy Ochrony Małoletnich](https://www.gabinetpsychologagdansk.pl/standardy)
+
+## Profil praktyki i E-E-A-T
+- **Specjalista:** Alicja Jankiewicz (dyplomowany psycholog, psychoterapeuta psychodynamiczny).
+- **Kwalifikacje:** Absolwentka psychologii klinicznej na Uniwersytecie Gdańskim oraz czteroletniego szkolenia w Krakowskim Centrum Psychodynamicznym (szkoła rekomendowana przez Polskie Towarzystwo Psychologiczne).
+- **Nurt pracy:** Psychoterapia psychodynamiczna.
+- **Formy pomocy:** Psychoterapia indywidualna dorosłych, młodzieży i dzieci, interwencja kryzysowa oraz psychoterapia grupowa.
+- **Standardy:** Regularna superwizja kliniczna u certyfikowanych superwizorów PTP. Pełna zgodność z Kodeksem Etycznym Psychoterapeuty PTPPd.

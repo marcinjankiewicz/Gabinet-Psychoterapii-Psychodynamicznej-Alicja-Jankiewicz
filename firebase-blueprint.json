@@ -1,0 +1,27 @@
+{
+  "entities": {
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "Represents a single blog article written by the therapist.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "The title of the blog post" },
+        "category": { "type": "string", "description": "Category folder" },
+        "excerpt": { "type": "string", "description": "Brief summary text" },
+        "content": { "type": "string", "description": "Markdown/plain text body content" },
+        "image": { "type": "string", "description": "Base64 string or URL of the banner image" },
+        "imagePlaceholderStyle": { "type": "string", "description": "Preset gradient class name if no image uploaded" },
+        "date": { "type": "string", "description": "Formatted polish date string" },
+        "readTime": { "type": "string", "description": "Calculated reading duration sentence" },
+        "isPinned": { "type": "boolean", "description": "Whether the post is highlighted on top" }
+      },
+      "required": ["title", "category", "content", "date", "readTime"]
+    }
+  },
+  "firestore": {
+    "/blog_posts/{postId}": {
+      "schema": "BlogPost",
+      "description": "Collection of therapist published articles."
+    }
+  }
+}
