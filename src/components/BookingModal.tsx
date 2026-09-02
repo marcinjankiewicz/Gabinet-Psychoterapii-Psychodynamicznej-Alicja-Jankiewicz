@@ -103,7 +103,7 @@ export default function BookingModal({ isOpen, onClose, preSelectedServiceId }: 
                     )}
                   </div>
                   <p className="text-[11px] sm:text-xs text-brand-muted mt-0.5 truncate">
-                    Gabinet Psychoterapii Alicja Jankiewicz &bull; Gdańsk oraz sesje online
+                    Gabinet Psychoterapii Alicja Jankiewicz &bull; Gdańsk
                   </p>
                 </div>
               </div>
