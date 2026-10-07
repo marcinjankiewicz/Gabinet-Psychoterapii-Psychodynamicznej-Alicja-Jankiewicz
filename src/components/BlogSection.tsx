@@ -109,7 +109,7 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const hashedInput = await hashPassword(passwordInput);
-    if (hashedInput === '06c4e6f6f12e32a4985fd8c596960e8b219a6c4585c8815b3be48b150cae8fe0') {
+    if (hashedInput === '71ad2d450f3e7be9b6e385ac2d363c1ef93ccd43a00dc2a4895b519cdfcdaecc') {
       setIsAdminUnlocked(true);
       setShowAdminLogin(false);
       setPasswordError(false);
