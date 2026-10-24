@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchBlogPosts } from '../lib/firebase';
+import { slugify } from '../lib/slugify';
 import { BlogPost } from '../types';
-import { Calendar, Clock, ArrowLeft, User, ShieldCheck } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, User } from 'lucide-react';
 
 export default function BlogPostDetail({ onOpenBooking }: { onOpenBooking: () => void }) {
   const { slug } = useParams<{ slug: string }>();
@@ -12,18 +13,31 @@ export default function BlogPostDetail({ onOpenBooking }: { onOpenBooking: () =>
   useEffect(() => {
     async function loadPost() {
       const posts = await fetchBlogPosts();
-      const found = posts.find(p => p.slug === slug || p.id === slug);
+      const found = posts.find(
+        p => p.slug === slug || slugify(p.title) === slug || p.id === slug
+      );
       setPost(found || null);
       setLoading(false);
 
       if (found) {
-        // Dynamiczna zmiana Title i Description dla botów i użytkowników
-        document.title = `${found.title} | Blog Gabinet Psychoterapii Gdańsk`;
-        
-        let metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) {
-          metaDesc.setAttribute('content', found.excerpt);
-        }
+        const cleanSlug = found.slug || slugify(found.title);
+        const canonicalUrl = `https://www.gabinetpsychologagdansk.pl/blog/${cleanSlug}`;
+        const seoTitle = `${found.title} | Blog Gabinet Psychoterapii Gdańsk`;
+
+        // Dynamiczna zmiana Title, Description i Canonical dla botów i użytkowników
+        document.title = seoTitle;
+
+        const setMeta = (selector: string, attr: string, val: string) => {
+          const el = document.querySelector(selector);
+          if (el) el.setAttribute(attr, val);
+        };
+
+        setMeta('meta[name="description"]', 'content', found.excerpt);
+        setMeta('meta[property="og:title"]', 'content', seoTitle);
+        setMeta('meta[property="og:description"]', 'content', found.excerpt);
+        setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+        setMeta('meta[property="og:type"]', 'content', 'article');
+        setMeta('link[rel="canonical"]', 'href', canonicalUrl);
       }
     }
     loadPost();
@@ -42,13 +56,15 @@ export default function BlogPostDetail({ onOpenBooking }: { onOpenBooking: () =>
     );
   }
 
+  const resolvedSlug = post.slug || slugify(post.title);
+
   // Dane strukturalne Google Schema.org dla artykułu medycznego / poradnikowego
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://www.gabinetpsychologagdansk.pl/blog/${post.slug}`
+      "@id": `https://www.gabinetpsychologagdansk.pl/blog/${resolvedSlug}`
     },
     "headline": post.title,
     "description": post.excerpt,

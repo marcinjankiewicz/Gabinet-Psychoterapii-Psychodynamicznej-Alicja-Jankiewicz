@@ -1,6 +1,6 @@
 {
-  "summary":  "Plan usunięcia wskazanych czterech podpunktów z sekcji artykułowej na podstronie /psycholog-dzieciecy-gdansk przy zachowaniu pełnej treści akapitów i spójności wizualnej karty.",
-  "updatedAt":  "2026-10-24T14:39:32.798860412Z",
+  "summary":  "Plan naprawy generowania przyjaznych adresów URL (slug) w sitemap.xml oraz migracji brakujących pól slug w bazie danych Firebase Firestore dla istniejących artykułów blogowych.",
+  "updatedAt":  "2026-10-24T15:42:06.857668524Z",
   "requestFeedback":  true,
   "userFacing":  true
 }
