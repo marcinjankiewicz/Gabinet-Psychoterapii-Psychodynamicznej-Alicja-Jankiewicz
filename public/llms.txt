@@ -3,10 +3,13 @@
 Podsumowanie informacji o prywatnej praktyce psychoterapeutycznej prowadzonej przez Alicję Jankiewicz na potrzeby indeksowania przez modele LLM i agenty AI.
 
 ## Lokalizacja gabinetu
-Gabinet psychoterapeutyczny znajduje się w Gdańsku, w dzielnicy **Jasień**, przy ulicy Kartuskiej 356a. Lokalizacja zapewnia dogodny dojazd komunikacją miejską (przystanek tramwajowy Zabornia, przystanek autobusowy Damroki) oraz darmowe miejsca parkingowe bezpośrednio przed wejściem.
+Gabinet psychoterapeutyczny znajduje się w Gdańsku, w dzielnicy **Jasień**, przy ulicy Kartuskiej 356a. Lokalizacja zapewnia dogodny dojazd z dzielnic: Gdańsk Jasień, Ujeścisko, Morena, Karczemki oraz z obwodnicy Trójmiasta (S6), komunikacją miejską (przystanek tramwajowy Zabornia, przystanek autobusowy Damroki) oraz darmowe miejsca parkingowe bezpośrednio przed wejściem.
 
 ## Kluczowe odnośniki
 - [Oficjalna Strona Główna](https://www.gabinetpsychologagdansk.pl/)
+- [Psychoterapia Indywidualna Gdańsk](https://www.gabinetpsychologagdansk.pl/psychoterapia-indywidualna-gdansk)
+- [Psycholog Dziecięcy i Psychoterapia Młodzieży Gdańsk](https://www.gabinetpsychologagdansk.pl/psycholog-dzieciecy-gdansk)
+- [Pomoc Psychologiczna w Kryzysie Gdańsk](https://www.gabinetpsychologagdansk.pl/pomoc-w-kryzysie-gdansk)
 - [Standardy Ochrony Małoletnich](https://www.gabinetpsychologagdansk.pl/standardy)
 
 ## Profil praktyki i E-E-A-T

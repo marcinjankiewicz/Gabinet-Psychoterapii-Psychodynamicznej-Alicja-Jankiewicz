@@ -1,37 +1,54 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Navigation, Info, CheckCircle, ExternalLink } from 'lucide-react';
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Navigation,
+  Info,
+  CheckCircle,
+  ExternalLink,
+  Clock,
+  ShieldCheck,
+  Copy
+} from 'lucide-react';
 import { motion } from 'motion/react';
+import { servicesData } from './OfferedServices';
 
-export default function ContactSection() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [isSent, setIsSent] = useState(false);
+interface ContactSectionProps {
+  onOpenBooking?: (serviceId?: string | null) => void;
+}
+
+export default function ContactSection({ onOpenBooking }: ContactSectionProps) {
   const [showDirections, setShowDirections] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const consultationService =
+    servicesData.find((s) => s.id === 'konsultacja') || servicesData[0];
+
+  const handleDirectBooking = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.message) {
-      const subject = encodeURIComponent(`Wiadomość ze strony gabinetu od: ${formData.name}`);
-      const body = encodeURIComponent(
-        `Wiadomość wysłana przez: ${formData.name}\n` +
-        `Adres e-mail nadawcy: ${formData.email}\n\n` +
-        `Treść wiadomości:\n${formData.message}`
-      );
-      
-      // OPTYMALIZACJA GA4: Śledzenie konwersji (wysłanie formularza kontaktowego)
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'generate_lead', {
-          'event_category': 'Contact',
-          'event_label': 'Contact Form'
-        });
-      }
-      
-      window.location.href = `mailto:psycholog.jankiewicz@gmail.com?subject=${subject}&body=${body}`;
 
-      setIsSent(true);
-      setTimeout(() => {
-        setIsSent(false);
-        setFormData({ name: '', email: '', message: '' });
-      }, 4000);
+    // OPTYMALIZACJA GA4: Śledzenie konwersji (przejście do bezpośredniej rezerwacji Medfile z sekcji Kontakt)
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'generate_lead', {
+        'event_category': 'Contact',
+        'event_label': 'Direct Medfile Booking CTA'
+      });
+    }
+
+    if (onOpenBooking) {
+      onOpenBooking(consultationService?.id || 'konsultacja');
+    }
+  };
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('psycholog.jankiewicz@gmail.com');
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 3000);
+    } catch {
+      // Fallback ignored
     }
   };
 
@@ -53,34 +70,18 @@ export default function ContactSection() {
           {/* Left info column: Contact links and details */}
           <div className="lg:col-span-7 p-8 sm:p-12 lg:p-16 flex flex-col justify-between gap-10">
             <div className="flex flex-col gap-6">
-              <span className="text-xs font-semibold uppercase tracking-wider text-brand-accent/80">Kontakt</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-brand-accent/80">Kontakt i Rejestracja Online</span>
               <h2 className="text-3xl sm:text-4xl font-serif font-semibold leading-tight">
                 Zrób pierwszy krok
               </h2>
               <p className="text-white/80 font-sans font-light leading-relaxed max-w-[480px] text-sm sm:text-base">
-                Początek terapii to wyraz odwagi i troski o siebie. Napisz lub zadzwoń bezpośrednio, by umówić się na pierwszą konsultację. Możesz także skorzystać z dostępnego formularza.
+                Początek terapii to wyraz odwagi i troski o siebie. Zarezerwuj dogodny termin bezpośrednio przez certyfikowany kalendarz online <strong className="text-white font-medium">Medfile</strong> lub skontaktuj się telefonicznie.
               </p>
             </div>
 
             {/* Direct contact info chips */}
             <div className="flex flex-col gap-5">
               
-              {/* E-mail */}
-              <a 
-                href="mailto:psycholog.jankiewicz@gmail.com"
-                className="flex items-center gap-4 group cursor-pointer w-fit"
-              >
-                <div className="p-3 bg-white/10 rounded-xl group-hover:bg-brand-secondary/30 transition-all text-brand-accent">
-                  <Mail size={18} />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-accent/70">Napisz do mnie</span>
-                  <span itemProp="email" className="text-sm sm:text-base font-semibold border-b border-transparent group-hover:border-white/50 transition-all">
-                    psycholog.jankiewicz@gmail.com
-                  </span>
-                </div>
-              </a>
-
               {/* Phone */}
               <a 
                 href="tel:+48514309526"
@@ -90,12 +91,50 @@ export default function ContactSection() {
                   <Phone size={18} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-accent/70">Zadzwoń</span>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-accent/70">Zadzwoń lub napisz SMS</span>
                   <span itemProp="telephone" className="text-sm sm:text-base font-semibold border-b border-transparent group-hover:border-white/50 transition-all">
                     +48 514 309 526
                   </span>
                 </div>
               </a>
+
+              {/* E-mail with copy-only action (no mailto client trigger) */}
+              <div className="flex items-center gap-4 flex-wrap">
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="flex items-center gap-4 group cursor-pointer w-fit text-left"
+                  title="Kliknij, aby skopiować adres e-mail"
+                >
+                  <div className="p-3 bg-white/10 rounded-xl group-hover:bg-brand-secondary/30 transition-all text-brand-accent">
+                    <Mail size={18} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-brand-accent/70">Adres e-mail (kliknij, aby skopiować)</span>
+                    <span itemProp="email" className="text-sm sm:text-base font-semibold border-b border-transparent group-hover:border-white/50 transition-all">
+                      psycholog.jankiewicz@gmail.com
+                    </span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="inline-flex items-center gap-1.5 text-[11px] bg-white/10 hover:bg-white/20 text-brand-accent px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer border border-white/10"
+                  title="Skopiuj adres e-mail do schowka"
+                >
+                  {copiedEmail ? (
+                    <>
+                      <CheckCircle size={12} />
+                      <span>Skopiowano</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={12} />
+                      <span>Kopiuj e-mail</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
               {/* Address */}
               <a 
@@ -120,22 +159,22 @@ export default function ContactSection() {
 
             </div>
 
-            <div className="text-[11px] text-white/50 font-light italic mt-4 max-w-[400px]">
-              * W trakcie prowadzenia sesji nie odbieram telefonów. Zostaw wiadomość SMS lub napisz e-mail – oddzwonię najszybciej, jak to możliwe.
+            <div className="text-[11px] text-white/50 font-light italic mt-4 max-w-[420px]">
+              * W trakcie prowadzenia sesji nie odbieram telefonów. Najwygodniejszym sposobem umówienia wizyty jest bezpośrednia rezerwacja w kalendarzu Medfile lub wiadomość SMS.
             </div>
           </div>
 
-          {/* Right column: Interactive Directions & Mini-contact-form Card */}
+          {/* Right column: Interactive Directions & Direct Medfile Booking Card */}
           <div className="lg:col-span-5 bg-brand-secondary p-8 sm:p-12 flex flex-col justify-center relative">
             
-            {/* VIEW 1: FORM & GENERAL INFO BOX */}
+            {/* VIEW 1: DIRECT MEDFILE BOOKING & GENERAL INFO BOX */}
             <div className={`${!showDirections ? 'flex' : 'hidden'} flex-col gap-6`}>
               <div className="bg-brand-bg text-brand-charcoal p-6 rounded-2xl shadow-lg border border-brand-bg/50">
                 <h3 className="text-lg font-serif font-semibold text-brand-primary flex items-center gap-2">
                   Gabinet Gdańsk – Jasień
                 </h3>
                 <p className="text-xs sm:text-sm font-light text-brand-muted leading-relaxed mt-1.5">
-                  Lokalizacja na gdańskim <strong className="text-brand-primary font-semibold">Jasieniu</strong> (przy ul. Kartuskiej) zapewnia komfortowy dojazd zarówno z bliskich dzielnic: <strong className="text-brand-primary font-semibold">Kokoszki</strong>, <strong className="text-brand-primary font-semibold">Ujeścisko-Łostowice</strong>, jak i <strong className="text-brand-primary font-semibold">Piecki-Migowo (Morena)</strong>.
+                  Dogodny dojazd z dzielnic: <strong className="text-brand-primary font-semibold">Gdańsk Jasień, Ujeścisko, Morena, Karczemki oraz z obwodnicy Trójmiasta (S6)</strong>.
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -148,62 +187,52 @@ export default function ContactSection() {
                 </motion.button>
               </div>
 
-              <div className="mt-2 border-t border-white/10 pt-5">
-                <h4 className="text-sm font-serif font-semibold text-brand-accent tracking-wide mb-3">
-                  Szybki kontakt e-mail:
-                </h4>
-                
-                {isSent ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="bg-white/10 p-4 rounded-xl flex items-center gap-3 text-brand-accent text-sm font-medium border border-white/10"
-                  >
-                    <CheckCircle size={18} className="text-brand-accent shrink-0" />
-                    Wiadomość została wysłana! Odpowiem wkrótce.
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                    <div className="grid grid-cols-2 gap-3">
-                      {/* OPTYMALIZACJA Accessibility: aria-label */}
-                      <input
-                        type="text"
-                        required
-                        aria-label="Twoje imię"
-                        placeholder="Imię"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="bg-white/10 border border-white/10 px-3 py-2 rounded-lg text-xs focus:outline-none focus:border-white focus:ring-1 focus:ring-white placeholder-white/30 text-white transition-all font-medium"
-                      />
-                      <input
-                        type="email"
-                        required
-                        aria-label="Twój adres e-mail"
-                        placeholder="E-mail"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="bg-white/10 border border-white/10 px-3 py-2 rounded-lg text-xs focus:outline-none focus:border-white focus:ring-1 focus:ring-white placeholder-white/30 text-white transition-all font-medium"
-                      />
+              <div className="mt-1 border-t border-white/15 pt-5">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-serif font-semibold text-brand-accent tracking-wide">
+                    Bezpośrednia rezerwacja terminu (Medfile):
+                  </h4>
+                  <span className="inline-flex items-center gap-1 text-[10px] text-white/80 bg-white/10 px-2 py-0.5 rounded-full">
+                    <ShieldCheck size={11} className="text-brand-accent" />
+                    24/7 Online
+                  </span>
+                </div>
+                <p className="text-xs text-white/80 font-light leading-relaxed mb-3.5">
+                  Umów pierwsze spotkanie konsultacyjne bezpośrednio przez kalendarz online bez opuszczania strony:
+                </p>
+
+                <form onSubmit={handleDirectBooking} className="flex flex-col gap-3">
+                  <div className="bg-white/15 border border-white/20 px-4 py-3 rounded-xl flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs sm:text-sm font-semibold text-white">
+                        {consultationService?.title || 'Konsultacja indywidualna'}
+                      </span>
+                      <span className="text-xs font-bold text-brand-accent">
+                        {consultationService?.price || '200 zł'}
+                      </span>
                     </div>
-                    <textarea
-                      placeholder="Treść Twojej wiadomości..."
-                      required
-                      aria-label="Treść wiadomości kontaktowej"
-                      rows={3}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="bg-white/10 border border-white/10 px-3 py-2 rounded-lg text-xs focus:outline-none focus:border-white focus:ring-1 focus:ring-white placeholder-white/30 text-white transition-all resize-none font-light"
-                    />
-                    <motion.button
-                      type="submit"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex items-center justify-center gap-1.5 bg-brand-accent text-brand-secondary text-xs font-bold py-2.5 px-4 rounded-lg hover:bg-brand-accent/90 transition-all cursor-pointer whitespace-nowrap"
-                    >
-                      Wyślij wiadomość <Send size={12} />
-                    </motion.button>
-                  </form>
-                )}
+                    <div className="flex items-center gap-1.5 text-[11px] text-white/85">
+                      <Clock size={12} className="text-brand-accent" />
+                      <span>
+                        Czas trwania: <strong>{consultationService?.duration || '50 min'}</strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-white/75 font-light leading-relaxed bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+                    Pozostałe opcje i formy wsparcia (psychoterapia indywidualna, pomoc w kryzysie, terapia grupowa) są dostępne po wcześniejszej rozmowie telefonicznej.
+                  </p>
+
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center justify-center gap-2 bg-brand-accent text-brand-secondary text-xs sm:text-sm font-bold py-3 px-4 rounded-xl hover:bg-brand-accent/90 transition-all cursor-pointer shadow-md"
+                  >
+                    <Calendar size={15} />
+                    Wybierz dogodny termin wizyty
+                  </motion.button>
+                </form>
               </div>
             </div>
 

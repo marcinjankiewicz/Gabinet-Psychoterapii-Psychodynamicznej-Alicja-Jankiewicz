@@ -1,10 +1,12 @@
 import React from 'react';
-import { MessageSquare, Heart, ShieldAlert, ArrowUpRight, Users } from 'lucide-react';
+import { MessageSquare, Heart, ShieldAlert, ArrowUpRight, Users, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Service } from '../types';
+import { ServiceRouteSlug } from './ServiceLandingPage';
 
 interface OfferedServicesProps {
   onSelectService: (serviceId: string) => void;
+  onNavigateToService?: (slug: ServiceRouteSlug) => void;
 }
 
 export const servicesData: Service[] = [
@@ -51,7 +53,14 @@ export const servicesData: Service[] = [
   }
 ];
 
-export default function OfferedServices({ onSelectService }: OfferedServicesProps) {
+export default function OfferedServices({ onSelectService, onNavigateToService }: OfferedServicesProps) {
+  const handleServiceLink = (e: React.MouseEvent<HTMLAnchorElement>, slug: ServiceRouteSlug) => {
+    if (onNavigateToService) {
+      e.preventDefault();
+      onNavigateToService(slug);
+    }
+  };
+
   return (
     <section id="oferta" className="pt-4 md:pt-8 pb-12 md:pb-24 max-w-[1140px] mx-auto px-6">
       
@@ -113,7 +122,7 @@ export default function OfferedServices({ onSelectService }: OfferedServicesProp
               </div>
               <button
                 onClick={() => onSelectService(servicesData[0].id)}
-                className="flex items-center gap-1.5 font-serif text-brand-primary hover:text-brand-secondary text-sm font-semibold group transition-all"
+                className="flex items-center gap-1.5 font-serif text-brand-primary hover:text-brand-secondary text-sm font-semibold group transition-all cursor-pointer"
               >
                 Rezerwuj
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -121,7 +130,7 @@ export default function OfferedServices({ onSelectService }: OfferedServicesProp
             </div>
           </motion.div>
 
-          {/* Card 2: Wsparcie w kryzysie (BEZ PRZYCISKU) */}
+          {/* Card 2: Wsparcie w kryzysie */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -142,19 +151,27 @@ export default function OfferedServices({ onSelectService }: OfferedServicesProp
               </p>
             </div>
             
-            <div className="pt-6 border-t border-brand-bg/80 flex items-center">
+            <div className="pt-6 border-t border-brand-bg/80 flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-col">
                 <span className="text-xs font-serif uppercase tracking-wider text-brand-muted/70">Wymiar i Koszt</span>
                 <span className="font-serif text-brand-primary text-base font-semibold mt-0.5">
                   {servicesData[1].duration} / {servicesData[1].price}
                 </span>
               </div>
+              <a
+                href="/pomoc-w-kryzysie-gdansk"
+                onClick={(e) => handleServiceLink(e, 'pomoc-w-kryzysie-gdansk')}
+                className="inline-flex items-center gap-1.5 font-serif text-brand-secondary hover:text-brand-primary text-sm font-semibold group transition-colors cursor-pointer"
+              >
+                Więcej o pomocy w kryzysie
+                <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+              </a>
             </div>
           </motion.div>
 
         </div>
 
-        {/* Bottom card: Psychoterapia indywidualna (BEZ PRZYCISKU) */}
+        {/* Bottom card: Psychoterapia indywidualna */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -189,12 +206,31 @@ export default function OfferedServices({ onSelectService }: OfferedServicesProp
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-brand-bg/80 flex items-center">
+              <div className="pt-6 border-t border-brand-bg/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex flex-col">
                   <span className="text-xs font-serif uppercase tracking-wider text-brand-muted/70">Wymiar i Koszt</span>
                   <span className="font-serif text-brand-primary text-base font-semibold mt-0.5">
                     {servicesData[2].duration} / {servicesData[2].price}
                   </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-4">
+                  <a
+                    href="/psychoterapia-indywidualna-gdansk"
+                    onClick={(e) => handleServiceLink(e, 'psychoterapia-indywidualna-gdansk')}
+                    className="inline-flex items-center gap-1.5 font-serif text-brand-primary hover:text-brand-secondary text-sm font-semibold group transition-colors cursor-pointer"
+                  >
+                    Psychoterapia dorosłych
+                    <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+                  </a>
+                  <span className="text-brand-muted/40 hidden sm:inline">•</span>
+                  <a
+                    href="/psycholog-dzieciecy-gdansk"
+                    onClick={(e) => handleServiceLink(e, 'psycholog-dzieciecy-gdansk')}
+                    className="inline-flex items-center gap-1.5 font-serif text-brand-secondary hover:text-brand-primary text-sm font-semibold group transition-colors cursor-pointer"
+                  >
+                    Psycholog dzieci i młodzieży
+                    <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+                  </a>
                 </div>
               </div>
             </div>
@@ -293,3 +329,4 @@ export default function OfferedServices({ onSelectService }: OfferedServicesProp
     </section>
   );
 }
+

@@ -12,22 +12,22 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       {/* Text column */}
       <div className="md:col-span-7 flex flex-col items-start gap-6">
         <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold tracking-wider uppercase bg-brand-accent/40 text-brand-secondary border border-brand-accent/60"
-        >
-          Alicja Jankiewicz — Psychoterapia Psychodynamiczna Gdańsk
-        </motion.h1>
-
-        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="text-4xl sm:text-5xl lg:text-[56px] font-serif font-semibold text-brand-primary leading-[1.15] tracking-tight"
+          transition={{ duration: 0.6 }}
+          className="text-3xl sm:text-4xl lg:text-5xl font-serif font-semibold text-brand-primary leading-[1.2] tracking-tight"
         >
-          Odzyskaj spokój w <span className="italic font-light">bezpiecznej</span> przestrzeni.
-        </motion.h2>
+          Psychoterapia psychodynamiczna w Gdańsku – odzyskaj spokój w bezpiecznej przestrzeni
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold tracking-wider uppercase bg-brand-accent/40 text-brand-secondary border border-brand-accent/60 mt-3"
+        >
+          Alicja Jankiewicz — Gabinet Psychoterapii (Gdańsk Jasień / Ujeścisko)
+        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 15 }}

@@ -1,0 +1,6 @@
+{
+  "summary":  "Plan aktualizacji sekcji kontaktu (ContactSection): usunięcie linku mailto na rzecz samego kopiowania adresu e-mail do schowka oraz ograniczenie modułu bezpośredniej rezerwacji online wyłącznie do Konsultacji indywidualnej z informacją o umawianiu pozostałych usług telefonicznie.",
+  "updatedAt":  "2026-10-24T10:48:48.758941334Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

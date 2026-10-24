@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HelpCircle, ChevronDown, ChevronUp, Lock, Sparkles, Clock, Users, ShieldAlert } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronUp, Lock, Sparkles, Clock, Users, ShieldAlert, MapPin } from 'lucide-react';
 
 interface FAQItem {
   question: string;
@@ -24,6 +24,12 @@ export default function FAQ() {
       answer: "Pierwsze 3-5 spotkań ma charakter konsultacji wstępnych. Służą one lepszemu poznaniu Twojej sytuacji życiowej, czyli zebraniu szczegółowego wywiadu, zgłaszanych trudności oraz oczekiwań. To także czas na ustalenie celów, które będą wyznaczać pracę terapeutyczną. Czas konsultacji to także okres stawiania diagnozy psychodynamicznej, kiedy to terapeuta próbuje rozpoznać strukturę osobowości pacjenta oraz jego mechanizmy funkcjonowania - pomaga to także przy stawianiu celów terapeutycznych. Proces konsultacji nie zobowiązuje do podjęcia psychoterapii, ale jeśli  podejmiesz taką decyzję, to zwieńczeniem spotkań jest ustalenie kontraktu terapeutycznego.",
       category: "Ogólne",
       icon: HelpCircle
+    },
+    {
+      question: "Jak dojechać do gabinetu i czy dostępny jest bezpłatny parking?",
+      answer: "Gabinet mieści się przy ul. Kartuskiej 356a (na pierwszym piętrze budynku). Lokalizacja zapewnia dogodny dojazd z dzielnic: Gdańsk Jasień, Ujeścisko, Morena, Karczemki oraz z obwodnicy Trójmiasta (S6). Dla zmotoryzowanych pacjentów dostępne są bezpłatne, ogólnodostępne miejsca parkingowe bezpośrednio przed wejściem do budynku. Osoby korzystające z komunikacji miejskiej mogą wygodnie dojechać tramwajem (przystanek Zabornia) lub autobusem (przystanek Damroki).",
+      category: "Ogólne",
+      icon: MapPin
     },
     {
       question: "Jak często odbywają się sesje i ile trwa jedno spotkanie?",
@@ -63,25 +69,8 @@ export default function FAQ() {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqData.map(item => ({
-      "@type": "Question",
-      "name": item.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": item.answer
-      }
-    }))
-  };
-
   return (
     <section id="faq" className="py-16 md:py-24 bg-brand-card/45 border-y border-brand-card/70 scroll-mt-20">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
 
       <div className="max-w-[840px] mx-auto px-6">
         

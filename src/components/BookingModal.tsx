@@ -20,11 +20,29 @@ interface BookingModalProps {
   preSelectedServiceId: string | null;
 }
 
-const BOOKING_CALENDAR_URL = "https://rejestracja.medfile.pl/register/user/uuid/b107d945-06c3-2051-c3cf-baee3378f612/facility/b070b416-eaf1-0127-5e5c-c4a513e4d213/type/non_remote";
+const MEDFILE_USER_HASH = "b107d945-06c3-2051-c3cf-baee3378f612";
+const MEDFILE_FACILITY_ID = "b070b416-eaf1-0127-5e5c-c4a513e4d213";
+const BOOKING_CALENDAR_URL = `https://rejestracja.medfile.pl/register/user/uuid/${MEDFILE_USER_HASH}/facility/${MEDFILE_FACILITY_ID}/type/non_remote`;
 
 export default function BookingModal({ isOpen, onClose, preSelectedServiceId }: BookingModalProps) {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
+
+  // Bezpieczne osadzenie certyfikowanego widgetu Medfile
+  useEffect(() => {
+    if (isOpen) {
+      const script = document.createElement('script');
+      script.src = "https://widget.medfile.pl/widget.js";
+      script.async = true;
+      document.body.appendChild(script);
+
+      return () => {
+        if (document.body.contains(script)) {
+          document.body.removeChild(script);
+        }
+      };
+    }
+  }, [isOpen]);
 
   // Ustalenie kontekstu wybranej usługi
   useEffect(() => {
@@ -88,7 +106,7 @@ export default function BookingModal({ isOpen, onClose, preSelectedServiceId }: 
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 id="booking-modal-title" className="text-base sm:text-lg font-serif font-bold text-brand-primary truncate">
-                      Rezerwacja terminu wizyty
+                      Wybierz dogodny termin wizyty
                     </h3>
                     {selectedService && (
                       <span className="inline-flex items-center gap-1.5 text-[11px] bg-brand-secondary/15 text-brand-primary border border-brand-secondary/30 px-2.5 py-0.5 rounded-full font-medium">
@@ -103,7 +121,7 @@ export default function BookingModal({ isOpen, onClose, preSelectedServiceId }: 
                     )}
                   </div>
                   <p className="text-[11px] sm:text-xs text-brand-muted mt-0.5 truncate">
-                    Gabinet Psychoterapii Alicja Jankiewicz &bull; Gdańsk
+                    Gabinet Psychoterapii Alicja Jankiewicz &bull; Certyfikowana rejestracja Medfile (Gdańsk Jasień)
                   </p>
                 </div>
               </div>
@@ -129,29 +147,36 @@ export default function BookingModal({ isOpen, onClose, preSelectedServiceId }: 
                 <button
                   onClick={onClose}
                   className="p-1.5 hover:bg-brand-card/60 rounded-lg text-brand-muted hover:text-brand-primary transition-all cursor-pointer"
-                  aria-label="Zamknij okno"
+                  aria-label="Zamknij"
                 >
                   <X size={20} />
                 </button>
               </div>
             </div>
 
-            {/* Główny obszar terminarza - bezpośrednio na pełną wysokość, bez zbędnych zagnieżdżonych kart */}
+            {/* Główny obszar terminarza Medfile */}
             <div className="relative w-full flex-1 min-h-0 bg-white overflow-hidden">
+              {/* Kontener widgetu Medfile */}
+              <div
+                id="medfile-widget-container"
+                data-hash={MEDFILE_USER_HASH}
+                data-facility={MEDFILE_FACILITY_ID}
+                className="sr-only"
+              />
               
               {/* Wskaźnik ładowania ramki */}
               {isIframeLoading && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/95 backdrop-blur-xs p-6 text-center">
                   <div className="w-8 h-8 border-3 border-brand-secondary/30 border-t-brand-secondary rounded-full animate-spin mb-3" />
-                  <p className="text-sm font-medium text-brand-primary font-serif">Ładowanie terminarza...</p>
-                  <p className="text-xs text-brand-muted mt-0.5">Pobieranie aktualnego kalendarza wizyt</p>
+                  <p className="text-sm font-medium text-brand-primary font-serif">Ładowanie terminarza Medfile...</p>
+                  <p className="text-xs text-brand-muted mt-0.5">Pobieranie aktualnego kalendarza wolnych wizyt</p>
                 </div>
               )}
 
-              {/* Bezpośredni formularz rejestracji zajmujący całą przestrzeń */}
+              {/* Bezpośredni formularz rejestracji Medfile zajmujący całą przestrzeń */}
               <iframe 
                 src={BOOKING_CALENDAR_URL}
-                title="Kalendarz wyboru terminu i rezerwacji wizyty"
+                title="Kalendarz wyboru terminu i rezerwacji wizyty Medfile"
                 className="w-full h-full border-0 block"
                 allow="clipboard-write; payment"
                 onLoad={() => setIsIframeLoading(false)}
