@@ -5,6 +5,7 @@
       "description": "Represents a single blog article written by the therapist.",
       "type": "object",
       "properties": {
+        "slug": { "type": "string", "description": "URL-friendly slug generated from the title" },
         "title": { "type": "string", "description": "The title of the blog post" },
         "category": { "type": "string", "description": "Category folder" },
         "excerpt": { "type": "string", "description": "Brief summary text" },
@@ -15,7 +16,7 @@
         "readTime": { "type": "string", "description": "Calculated reading duration sentence" },
         "isPinned": { "type": "boolean", "description": "Whether the post is highlighted on top" }
       },
-      "required": ["title", "category", "content", "date", "readTime"]
+      "required": ["slug", "title", "category", "content", "date", "readTime"]
     }
   },
   "firestore": {

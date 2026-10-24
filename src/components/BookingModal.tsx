@@ -17,14 +17,14 @@ import { servicesData } from './OfferedServices';
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  preSelectedServiceId: string | null;
+  preSelectedServiceId?: string | null;
 }
 
 const MEDFILE_USER_HASH = "b107d945-06c3-2051-c3cf-baee3378f612";
 const MEDFILE_FACILITY_ID = "b070b416-eaf1-0127-5e5c-c4a513e4d213";
 const BOOKING_CALENDAR_URL = `https://rejestracja.medfile.pl/register/user/uuid/${MEDFILE_USER_HASH}/facility/${MEDFILE_FACILITY_ID}/type/non_remote`;
 
-export default function BookingModal({ isOpen, onClose, preSelectedServiceId }: BookingModalProps) {
+export default function BookingModal({ isOpen, onClose, preSelectedServiceId = null }: BookingModalProps) {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [isIframeLoading, setIsIframeLoading] = useState<boolean>(true);
 

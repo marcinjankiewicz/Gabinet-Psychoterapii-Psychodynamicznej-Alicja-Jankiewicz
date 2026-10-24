@@ -1,11 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MessageSquare, Heart, ShieldAlert, ArrowUpRight, Users, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Service } from '../types';
 import { ServiceRouteSlug } from './ServiceLandingPage';
 
 interface OfferedServicesProps {
-  onSelectService: (serviceId: string) => void;
+  onSelectService: (serviceId?: string) => void;
   onNavigateToService?: (slug: ServiceRouteSlug) => void;
 }
 
@@ -54,10 +55,15 @@ export const servicesData: Service[] = [
 ];
 
 export default function OfferedServices({ onSelectService, onNavigateToService }: OfferedServicesProps) {
+  const navigate = useNavigate();
+
   const handleServiceLink = (e: React.MouseEvent<HTMLAnchorElement>, slug: ServiceRouteSlug) => {
+    e.preventDefault();
     if (onNavigateToService) {
-      e.preventDefault();
       onNavigateToService(slug);
+    } else {
+      navigate(`/${slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 

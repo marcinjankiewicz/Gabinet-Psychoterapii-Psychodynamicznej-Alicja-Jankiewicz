@@ -1,12 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ExternalLink, ShieldCheck } from 'lucide-react';
 import { ServiceRouteSlug } from './ServiceLandingPage';
 
 interface FooterProps {
   onOpenPrivacy: () => void;
-  onNavigateToStandards: () => void;
-  onNavigateHome: () => void;
-  onNavigateToBlog: () => void;
+  onNavigateToStandards?: () => void;
+  onNavigateHome?: () => void;
+  onNavigateToBlog?: () => void;
   onNavigateToService?: (slug: ServiceRouteSlug) => void;
 }
 
@@ -18,10 +19,15 @@ export default function Footer({
   onNavigateToService
 }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
   const handleHomeLink = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
-    onNavigateHome();
+    if (onNavigateHome) {
+      onNavigateHome();
+    } else {
+      navigate('/');
+    }
     setTimeout(() => {
       const element = document.querySelector(hash);
       if (element) {
@@ -33,9 +39,32 @@ export default function Footer({
   };
 
   const handleServiceLink = (e: React.MouseEvent<HTMLAnchorElement>, slug: ServiceRouteSlug) => {
+    e.preventDefault();
     if (onNavigateToService) {
-      e.preventDefault();
       onNavigateToService(slug);
+    } else {
+      navigate(`/${slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleBlogNav = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigateToBlog) {
+      onNavigateToBlog();
+    } else {
+      navigate('/blog');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleStandardsNav = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigateToStandards) {
+      onNavigateToStandards();
+    } else {
+      navigate('/standardy');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -147,7 +176,7 @@ export default function Footer({
             <li>
               <button 
                 type="button"
-                onClick={(e) => { e.preventDefault(); onNavigateToBlog(); }}
+                onClick={handleBlogNav}
                 className="text-brand-muted hover:text-brand-primary font-medium transition-colors flex items-center cursor-pointer text-left"
               >
                 Blog
@@ -156,7 +185,7 @@ export default function Footer({
             <li>
               <button 
                 type="button"
-                onClick={(e) => { e.preventDefault(); onNavigateToStandards(); }}
+                onClick={handleStandardsNav}
                 className="text-brand-secondary hover:text-brand-primary font-semibold transition-colors flex items-center gap-1 cursor-pointer text-left"
               >
                 <ShieldCheck size={14} />
@@ -212,10 +241,7 @@ export default function Footer({
         <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center sm:justify-end">
           <button 
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigateToStandards();
-            }}
+            onClick={handleStandardsNav}
             className="hover:text-brand-primary transition-colors cursor-pointer text-brand-secondary font-semibold"
           >
             Standardy Ochrony Małoletnich (SOM)

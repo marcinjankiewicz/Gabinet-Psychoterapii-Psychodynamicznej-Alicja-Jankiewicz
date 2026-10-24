@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   Calendar,
@@ -263,12 +264,6 @@ export const SERVICE_PAGES_DATA: Record<ServiceRouteSlug, ServicePageMeta> = {
           'Praca psychoterapeutyczna z młodym człowiekiem uwzględnia jego aktualny etap rozwojowy. U dzieci młodszych naturalnym językiem komunikacji emocjonalnej obok rozmowy jest zabawa tematyczna, rysunek oraz metafora. Poprzez spontaniczną aktywność w bezpiecznej relacji z terapeutą dziecko może wyrazić lęki, złość, poczucie bezradności czy konflikty wewnętrzne, których nie potrafi jeszcze ująć w pojęcia abstrakcyjne.',
           'Z kolei psychoterapia młodzieży przypomina w swojej formie pracę z osobami dorosłymi – opiera się na dialogu, jednak szczególny nacisk kładzie na wyzwania rozwojowe okresu adolescencji: kształtowanie tożsamości, separację od rodziców, budowanie granic, radzenie sobie z presją rówieśniczą i szkolną oraz przeżywanie własnej cielesności i emocjonalności.',
           'Nadrzędnym celem terapii nie jest „naprawienie” dziecka ani dopasowanie go do sztywnych oczekiwań otoczenia, lecz odblokowanie jego naturalnego potencjału rozwojowego, wzmocnienie odporności psychicznej i przywrócenie zdolności do czerpania radości z relacji oraz nauki.'
-        ],
-        bulletPoints: [
-          'Doświadczenie kliniczne zdobyte m.in. na Dziennym Oddziale Psychiatrycznym dla Dzieci i Młodzieży, w Poradni Zdrowia Psychicznego, w placówkach oświatowych oraz w Centrum Interwencji Kryzysowej.',
-          'Pełne wdrożenie i przestrzeganie Standardów Ochrony Małoletnich (SOM) gwarantujących najwyższy poziom bezpieczeństwa dziecka w gabinecie.',
-          'Poszanowanie tajemnicy terapeutycznej nastolatka przy jednoczesnym dbaniu o bezpieczeństwo i przejrzystą komunikację z rodzicami w sprawach kluczowych.',
-          'Holistyczne spojrzenie: w razie potrzeby współpraca ze szkołą, poradnią psychologiczno-pedagogiczną lub lekarzem psychiatrą dzieci i młodzieży.'
         ]
       },
       {
@@ -455,9 +450,9 @@ export const SERVICE_PAGES_DATA: Record<ServiceRouteSlug, ServicePageMeta> = {
 
 interface ServiceLandingPageProps {
   slug: ServiceRouteSlug;
-  onBackToHome: () => void;
+  onBackToHome?: () => void;
   onOpenBooking: (serviceId?: string | null) => void;
-  onNavigateToService: (slug: ServiceRouteSlug) => void;
+  onNavigateToService?: (slug: ServiceRouteSlug) => void;
   onNavigateToStandards?: () => void;
 }
 
@@ -468,7 +463,22 @@ export default function ServiceLandingPage({
   onNavigateToService,
   onNavigateToStandards
 }: ServiceLandingPageProps) {
+  const navigate = useNavigate();
   const page = SERVICE_PAGES_DATA[slug];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.title = page.metaTitle;
+    const setMeta = (selector: string, attr: string, val: string) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, val);
+    };
+    setMeta('meta[name="description"]', 'content', page.metaDescription);
+    setMeta('meta[property="og:title"]', 'content', page.metaTitle);
+    setMeta('meta[property="og:description"]', 'content', page.metaDescription);
+    setMeta('meta[property="og:url"]', 'content', page.canonicalUrl);
+    setMeta('link[rel="canonical"]', 'href', page.canonicalUrl);
+  }, [page]);
 
   const otherServices = (Object.keys(SERVICE_PAGES_DATA) as ServiceRouteSlug[]).filter(
     (key) => key !== slug
@@ -495,7 +505,11 @@ export default function ServiceLandingPage({
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                onBackToHome();
+                if (onBackToHome) {
+                  onBackToHome();
+                } else {
+                  navigate('/');
+                }
               }}
               className="hover:text-brand-primary transition-colors font-medium inline-flex items-center gap-1.5 cursor-pointer"
             >
@@ -722,10 +736,16 @@ export default function ServiceLandingPage({
                 regularnej superwizji certyfikowanych superwizorów PTP i PTPPd.
               </p>
 
-              {slug === 'psycholog-dzieciecy-gdansk' && onNavigateToStandards && (
+              {slug === 'psycholog-dzieciecy-gdansk' && (
                 <button
                   type="button"
-                  onClick={onNavigateToStandards}
+                  onClick={() => {
+                    if (onNavigateToStandards) {
+                      onNavigateToStandards();
+                    } else {
+                      navigate('/standardy');
+                    }
+                  }}
                   className="w-full mb-4 py-2.5 px-4 rounded-xl bg-brand-bg text-brand-secondary hover:text-brand-primary text-xs font-semibold flex items-center justify-center gap-2 border border-brand-accent/50 transition-colors cursor-pointer"
                 >
                   <ShieldCheck size={15} />
@@ -836,7 +856,11 @@ export default function ServiceLandingPage({
                   href={otherPage.path}
                   onClick={(e) => {
                     e.preventDefault();
-                    onNavigateToService(otherSlug);
+                    if (onNavigateToService) {
+                      onNavigateToService(otherSlug);
+                    } else {
+                      navigate(otherPage.path);
+                    }
                   }}
                   className="group bg-brand-card/55 hover:bg-brand-card p-6 rounded-2xl border border-brand-card hover:border-brand-accent/60 transition-all flex items-center justify-between gap-4 cursor-pointer"
                 >

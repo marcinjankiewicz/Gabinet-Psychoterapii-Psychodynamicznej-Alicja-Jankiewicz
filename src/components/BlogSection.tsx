@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   BookOpen, 
   ArrowLeft, 
@@ -18,10 +19,13 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { BlogPost } from '../types';
 import { fetchBlogPosts, saveBlogPost, deleteBlogPost, uploadBlogImage } from '../lib/firebase';
+import { slugify } from '../lib/slugify';
 
 interface BlogSectionProps {
-  onBackToHome: () => void;
+  onBackToHome?: () => void;
   onOpenBooking: () => void;
+  activeSlug?: string | null;
+  onSelectPostSlug?: (slug: string | null) => void;
 }
 
 const DEFAULT_POSTS: BlogPost[] = [];
@@ -35,10 +39,28 @@ const BACKGROUND_PRESETS = [
   { id: 'sand', name: 'Calming Sand', style: 'bg-gradient-to-br from-[#f6f3f2] via-[#e6e2e0] to-[#cbe6d4]/20' }
 ];
 
-export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSectionProps) {
+export default function BlogSection({
+  onBackToHome,
+  onOpenBooking,
+  activeSlug = null,
+  onSelectPostSlug,
+}: BlogSectionProps) {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('Wszystkie');
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+
+  const handleSelectPost = (post: BlogPost | null) => {
+    if (post) {
+      const targetSlug = post.slug || slugify(post.title);
+      navigate(`/blog/${targetSlug}`);
+    } else {
+      setSelectedPost(null);
+      if (onSelectPostSlug) {
+        onSelectPostSlug(null);
+      }
+    }
+  };
   
   // Admin Mode states
   const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
@@ -79,7 +101,12 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
       const saved = localStorage.getItem('alicja_jankiewicz_blog_posts_v2');
       if (saved) {
         try {
-          setPosts(JSON.parse(saved));
+          const parsed: BlogPost[] = JSON.parse(saved);
+          const normalized = parsed.map((p) => ({
+            ...p,
+            slug: p.slug || slugify(p.title || '') || p.id,
+          }));
+          setPosts(normalized);
         } catch (err) {
           setPosts(DEFAULT_POSTS);
         }
@@ -92,6 +119,121 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
   useEffect(() => {
     loadPostsFromFirebase();
   }, []);
+
+  // Synchronize selectedPost with URL slug (/blog/:slug or /blog)
+  useEffect(() => {
+    if (!activeSlug) {
+      setSelectedPost(null);
+      return;
+    }
+    if (posts.length > 0) {
+      const matched = posts.find(
+        (p) => p.slug === activeSlug || slugify(p.title) === activeSlug || p.id === activeSlug
+      );
+      if (matched) {
+        setSelectedPost(matched);
+      }
+    }
+  }, [activeSlug, posts]);
+
+  // Dynamic SEO metadata + Schema.org BlogPosting for individual article view
+  useEffect(() => {
+    const schemaScriptId = 'blog-post-schema-jsonld';
+    const existingScript = document.getElementById(schemaScriptId);
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    if (selectedPost) {
+      const postSlug = selectedPost.slug || slugify(selectedPost.title);
+      const canonicalUrl = `https://www.gabinetpsychologagdansk.pl/blog/${postSlug}`;
+      const seoTitle = `${selectedPost.title} | Blog Psychologiczny — Alicja Jankiewicz Gdańsk`;
+      const seoDescription =
+        selectedPost.excerpt ||
+        selectedPost.content.replace(/[#*]/g, '').substring(0, 155).trim() + '...';
+      const seoImage =
+        selectedPost.image && selectedPost.image.startsWith('http')
+          ? selectedPost.image
+          : 'https://www.gabinetpsychologagdansk.pl/alicjajankiewicz1.webp';
+
+      document.title = seoTitle;
+
+      const setMeta = (selector: string, attr: string, val: string) => {
+        const el = document.querySelector(selector);
+        if (el) el.setAttribute(attr, val);
+      };
+
+      setMeta('meta[name="description"]', 'content', seoDescription);
+      setMeta('meta[property="og:title"]', 'content', seoTitle);
+      setMeta('meta[property="og:description"]', 'content', seoDescription);
+      setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+      setMeta('meta[property="og:type"]', 'content', 'article');
+      setMeta('meta[property="og:image"]', 'content', seoImage);
+      setMeta('link[rel="canonical"]', 'href', canonicalUrl);
+
+      const blogPostingSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        '@id': `${canonicalUrl}#article`,
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': canonicalUrl,
+        },
+        headline: selectedPost.title,
+        description: seoDescription,
+        image: seoImage,
+        articleSection: selectedPost.category,
+        inLanguage: 'pl-PL',
+        author: {
+          '@type': 'Person',
+          name: 'Alicja Jankiewicz',
+          jobTitle: 'Psycholog, Psychoterapeuta Psychodynamiczny',
+          url: 'https://www.gabinetpsychologagdansk.pl/',
+        },
+        publisher: {
+          '@type': 'Therapist',
+          '@id': 'https://www.gabinetpsychologagdansk.pl/#gabinet',
+          name: 'Gabinet Psychoterapii Psychodynamicznej Alicja Jankiewicz',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://www.gabinetpsychologagdansk.pl/alicjajankiewicz1.webp',
+          },
+        },
+        url: canonicalUrl,
+      };
+
+      const script = document.createElement('script');
+      script.id = schemaScriptId;
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(blogPostingSchema);
+      document.head.appendChild(script);
+    } else {
+      const defaultBlogTitle =
+        'Artykuły i Baza Wiedzy – Psychoterapia Psychodynamiczna Gdańsk | Alicja Jankiewicz';
+      const defaultBlogDesc =
+        'Artykuły o psychoterapii psychodynamicznej, zdrowiu psychicznym, wsparciu dzieci i młodzieży oraz radzeniu sobie z kryzysem emocjonalnym.';
+      const defaultBlogUrl = 'https://www.gabinetpsychologagdansk.pl/blog';
+
+      document.title = defaultBlogTitle;
+      const setMeta = (selector: string, attr: string, val: string) => {
+        const el = document.querySelector(selector);
+        if (el) el.setAttribute(attr, val);
+      };
+      setMeta('meta[name="description"]', 'content', defaultBlogDesc);
+      setMeta('meta[property="og:title"]', 'content', defaultBlogTitle);
+      setMeta('meta[property="og:description"]', 'content', defaultBlogDesc);
+      setMeta('meta[property="og:url"]', 'content', defaultBlogUrl);
+      setMeta('meta[property="og:type"]', 'content', 'website');
+      setMeta('link[rel="canonical"]', 'href', defaultBlogUrl);
+    }
+
+    return () => {
+      const cleanupScript = document.getElementById(schemaScriptId);
+      if (cleanupScript) {
+        cleanupScript.remove();
+      }
+    };
+  }, [selectedPost]);
 
   const savePostsToCache = (newPosts: BlogPost[]) => {
     setPosts(newPosts);
@@ -181,7 +323,7 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
         const filtered = posts.filter(p => p.id !== id);
         savePostsToCache(filtered);
         if (selectedPost && selectedPost.id === id) {
-          setSelectedPost(null);
+          handleSelectPost(null);
         }
       } catch (err) {
         console.error('Delete failed:', err);
@@ -219,9 +361,11 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
 
       const calculatedReadTime = estimateReadTime(formContent);
       const finalExcerpt = formExcerpt.trim() || (formContent.substring(0, 160) + '...');
+      const postSlug = slugify(formTitle);
 
       const postData: BlogPost = {
         id: editingPostId || '',
+        slug: postSlug,
         title: formTitle.trim(),
         category: formCategory,
         excerpt: finalExcerpt.trim(),
@@ -280,7 +424,7 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
           >
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-brand-card pb-6 mb-8">
               <button 
-                onClick={() => setSelectedPost(null)}
+                onClick={() => handleSelectPost(null)}
                 className="flex items-center gap-2 text-brand-secondary font-semibold hover:text-brand-primary transition-colors cursor-pointer text-sm"
               >
                 <ArrowLeft size={16} />
@@ -374,7 +518,7 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
                     Umów konsultację
                   </button>
                   <button
-                    onClick={() => setSelectedPost(null)}
+                    onClick={() => handleSelectPost(null)}
                     className="border border-brand-muted/30 hover:border-brand-primary text-brand-muted hover:text-brand-primary text-sm px-5 py-3 rounded-lg transition-all cursor-pointer bg-brand-bg"
                   >
                     Powrót do bloga
@@ -636,14 +780,20 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
             exit={{ opacity: 0 }}
             className="space-y-12"
           >
-            {/* WDROŻONE: Przycisk wywołujący przekazany prop onBackToHome */}
+            {/* Powrót do strony głównej */}
             <div className="flex justify-start">
-              <button
-                onClick={onBackToHome}
+              <Link
+                to="/"
+                onClick={(e) => {
+                  if (onBackToHome) {
+                    e.preventDefault();
+                    onBackToHome();
+                  }
+                }}
                 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-muted hover:text-brand-secondary transition-colors cursor-pointer bg-brand-card/40 px-4 py-2 rounded-xl border border-black/5"
               >
                 <ArrowLeft size={14} /> Powrót do strony głównej
-              </button>
+              </Link>
             </div>
 
             <div className="text-center max-w-2xl mx-auto space-y-4">
@@ -667,7 +817,7 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
                     key={cat}
                     onClick={() => {
                       setSelectedCategory(cat);
-                      setSelectedPost(null);
+                      handleSelectPost(null);
                     }}
                     className={`px-4 py-2 rounded-full text-xs font-semibold cursor-pointer transition-all duration-200 ${selectedCategory === cat ? 'bg-brand-secondary text-white shadow-soft-lift scale-[1.02]' : 'bg-brand-card/85 text-brand-muted hover:bg-brand-card hover:text-brand-primary'}`}
                   >
@@ -756,6 +906,7 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
                 
                 {filteredPosts.map((post) => {
                   const isPostPinned = !!post.isPinned;
+                  const postSlug = post.slug || slugify(post.title);
                   
                   return (
                     <motion.article
@@ -779,7 +930,9 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
 
                         <div className="space-y-2">
                           <h3 className={`font-serif text-brand-primary leading-tight font-bold group-hover:text-brand-secondary transition-colors ${isPostPinned ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl'}`}>
-                            {post.title}
+                            <Link to={`/blog/${postSlug}`}>
+                              {post.title}
+                            </Link>
                           </h3>
                           <p className="text-brand-muted text-xs md:text-sm leading-relaxed line-clamp-3">
                             {post.excerpt}
@@ -792,12 +945,12 @@ export default function BlogSection({ onBackToHome, onOpenBooking }: BlogSection
                       )}
 
                       <div className="pt-6 mt-6 border-t border-brand-accent/15 flex items-center justify-between">
-                        <button
-                          onClick={() => setSelectedPost(post)}
+                        <Link
+                          to={`/blog/${postSlug}`}
                           className="text-brand-secondary font-bold text-xs flex items-center gap-1 group-hover:gap-2 transition-all cursor-pointer hover:text-brand-primary uppercase tracking-wider"
                         >
                           Czytaj artykuł <ArrowRight size={14} />
-                        </button>
+                        </Link>
 
                         <div className="flex items-center gap-2">
                           <span className="text-[10px] text-brand-muted font-medium flex items-center gap-1">

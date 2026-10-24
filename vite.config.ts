@@ -27,6 +27,7 @@ export default defineConfig(() => {
             __dirname,
             'pomoc-w-kryzysie-gdansk/index.html'
           ),
+          blog: path.resolve(__dirname, 'blog/index.html'),
         },
       },
     },

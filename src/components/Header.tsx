@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Calendar, ShieldCheck, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { AppView } from '../App';
 import { ServiceRouteSlug } from './ServiceLandingPage';
 
 interface HeaderProps {
   onOpenBooking: () => void;
-  onNavigateHome: () => void;
-  onNavigateToStandards: () => void;
-  onNavigateToBlog: () => void;
-  onNavigateToService: (slug: ServiceRouteSlug) => void;
-  currentView: AppView;
+  onNavigateHome?: () => void;
+  onNavigateToStandards?: () => void;
+  onNavigateToBlog?: () => void;
+  onNavigateToService?: (slug: ServiceRouteSlug) => void;
+  currentView?: string;
 }
 
 export default function Header({
@@ -19,10 +19,25 @@ export default function Header({
   onNavigateToStandards,
   onNavigateToBlog,
   onNavigateToService,
-  currentView
 }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const pathname = location.pathname.replace(/\/index\.html$/, '').replace(/\/+$/, '') || '/';
+  const currentView =
+    pathname === '/standardy' || pathname === '/ochrona-dzieci'
+      ? 'standards'
+      : pathname === '/blog' || pathname.startsWith('/blog/')
+      ? 'blog'
+      : pathname === '/psychoterapia-indywidualna-gdansk'
+      ? 'psychoterapia-indywidualna-gdansk'
+      : pathname === '/psycholog-dzieciecy-gdansk'
+      ? 'psycholog-dzieciecy-gdansk'
+      : pathname === '/pomoc-w-kryzysie-gdansk'
+      ? 'pomoc-w-kryzysie-gdansk'
+      : 'home';
 
   const serviceSubLinks: { name: string; slug: ServiceRouteSlug; href: string }[] = [
     {
@@ -55,16 +70,30 @@ export default function Header({
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, link: typeof navLinks[0]) => {
     if (link.type === 'standards') {
       e.preventDefault();
-      onNavigateToStandards();
+      if (onNavigateToStandards) {
+        onNavigateToStandards();
+      } else {
+        navigate('/standardy');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
       setIsOpen(false);
     } else if (link.type === 'blog') {
       e.preventDefault();
-      onNavigateToBlog();
+      if (onNavigateToBlog) {
+        onNavigateToBlog();
+      } else {
+        navigate('/blog');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
       setIsOpen(false);
     } else {
       if (currentView !== 'home') {
         e.preventDefault();
-        onNavigateHome();
+        if (onNavigateHome) {
+          onNavigateHome();
+        } else {
+          navigate('/');
+        }
         const hash = link.href;
         setTimeout(() => {
           const element = document.querySelector(hash);
@@ -84,14 +113,23 @@ export default function Header({
     slug: ServiceRouteSlug
   ) => {
     e.preventDefault();
-    onNavigateToService(slug);
+    if (onNavigateToService) {
+      onNavigateToService(slug);
+    } else {
+      navigate(`/${slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     setIsServicesDropdownOpen(false);
     setIsOpen(false);
   };
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    onNavigateHome();
+    if (onNavigateHome) {
+      onNavigateHome();
+    } else {
+      navigate('/');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

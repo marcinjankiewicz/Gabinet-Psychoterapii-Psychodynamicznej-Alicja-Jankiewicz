@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { BlogPost } from '../types';
+import { slugify } from './slugify';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDt63YgXqVj1TqUdZEVgwdti0TaPwOTWDA",
@@ -113,9 +114,11 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
     
     querySnapshot.forEach((docSnap) => {
       const data = docSnap.data();
+      const postTitle = data.title || '';
       posts.push({
         id: docSnap.id,
-        title: data.title || '',
+        slug: data.slug || slugify(postTitle) || docSnap.id,
+        title: postTitle,
         category: data.category || 'Inne',
         excerpt: data.excerpt || '',
         content: data.content || '',
@@ -146,7 +149,9 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
  */
 export async function saveBlogPost(post: BlogPost): Promise<BlogPost> {
   try {
+    const resolvedSlug = post.slug || slugify(post.title);
     const postData = {
+      slug: resolvedSlug,
       title: post.title,
       category: post.category,
       excerpt: post.excerpt,

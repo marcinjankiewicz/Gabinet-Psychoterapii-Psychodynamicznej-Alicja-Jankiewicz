@@ -1,5 +1,6 @@
 export interface BlogPost {
   id: string;
+  slug: string; // np. "psychoterapia-psychodynamiczna-jak-wyglada-pierwsza-wizyta"
   title: string;
   excerpt: string;
   content: string;

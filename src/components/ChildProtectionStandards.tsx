@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { 
   ShieldCheck, 
@@ -14,16 +15,40 @@ import {
 } from 'lucide-react';
 
 interface ChildProtectionStandardsProps {
-  onBackToHome: () => void;
+  onBackToHome?: () => void;
 }
 
 export default function ChildProtectionStandards({ onBackToHome }: ChildProtectionStandardsProps) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'child-friendly' | 'full-standards'>('child-friendly');
   const [expandedChapter, setExpandedChapter] = useState<number | null>(null);
 
-  // Scroll to top on load
+  const handleBack = () => {
+    if (onBackToHome) {
+      onBackToHome();
+    } else {
+      navigate('/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Scroll to top and set SEO metadata on load
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
+    const title = 'Standardy Ochrony Małoletnich (SOM) – Gabinet Psychoterapii Gdańsk | Alicja Jankiewicz';
+    const description =
+      'Standardy Ochrony Małoletnich (SOM) obowiązujące w Gabinecie Psychoterapii Psychodynamicznej Alicji Jankiewicz w Gdańsku przy ul. Kartuskiej 356a.';
+    const canonical = 'https://www.gabinetpsychologagdansk.pl/standardy';
+    document.title = title;
+    const setMeta = (selector: string, attr: string, val: string) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute(attr, val);
+    };
+    setMeta('meta[name="description"]', 'content', description);
+    setMeta('meta[property="og:title"]', 'content', title);
+    setMeta('meta[property="og:description"]', 'content', description);
+    setMeta('meta[property="og:url"]', 'content', canonical);
+    setMeta('link[rel="canonical"]', 'href', canonical);
   }, []);
 
   const toggleChapter = (num: number) => {
@@ -231,7 +256,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
         {/* Navigation back and header banner */}
         <div className="mb-8 flex items-center justify-between">
           <button 
-            onClick={onBackToHome}
+            onClick={handleBack}
             className="flex items-center gap-2 group text-brand-muted hover:text-brand-primary font-medium text-sm transition-colors cursor-pointer"
           >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -348,14 +373,16 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                 </div>
               </div>
 
-              <div className="bg-red-50 text-red-700 p-2.5 rounded-lg shrink-0 h-10 w-10 flex items-center justify-center font-semibold font-serif border border-red-100 animate-pulse">
-                4
-              </div>
-              <div>
-                <h4 className="font-serif font-bold text-base text-red-950 mb-1">Brak tolerancji dla przemocy</h4>
-                <p className="text-xs sm:text-sm text-brand-muted leading-relaxed font-sans font-light">
-                  Nietolerujemy przemocy w żadnej formie. Jeśli doświadczysz krzywdy, powiedz o tym psychoterapeucie lub zaufanej osobie dorosłej w gabinecie. Reagujemy natychmiast!
-                </p>
+              <div className="bg-brand-bg/60 border border-brand-card/85 rounded-xl p-5 flex gap-4">
+                <div className="bg-red-50 text-red-700 p-2.5 rounded-lg shrink-0 h-10 w-10 flex items-center justify-center font-semibold font-serif border border-red-100 animate-pulse">
+                  4
+                </div>
+                <div>
+                  <h4 className="font-serif font-bold text-base text-red-950 mb-1">Brak tolerancji dla przemocy</h4>
+                  <p className="text-xs sm:text-sm text-brand-muted leading-relaxed font-sans font-light">
+                    Nie tolerujemy przemocy w żadnej formie. Jeśli doświadczysz krzywdy, powiedz o tym psychoterapeucie lub zaufanej osobie dorosłej w gabinecie. Reagujemy natychmiast!
+                  </p>
+                </div>
               </div>
 
               <div className="bg-brand-bg/60 border border-brand-card/85 rounded-xl p-5 flex gap-4 md:col-span-2">
@@ -490,7 +517,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
             Zgodnie z polskim prawem (tzw. Ustawą Kamilka), dbam o to, by każda przestrzeń terapeutyczna i kontakt z terapeutą były miejscem bezpiecznym. Zapraszam również rodziców do kontaktu w razie jakichkolwiek pytań.
           </p>
           <button
-            onClick={onBackToHome}
+            onClick={handleBack}
             className="inline-flex items-center gap-2 bg-brand-primary text-white font-serif px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-brand-primary/95 transition-all shadow-soft-lift cursor-pointer"
           >
             Powrót do strony głównej
