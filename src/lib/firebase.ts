@@ -149,7 +149,7 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
  */
 export async function saveBlogPost(post: BlogPost): Promise<BlogPost> {
   try {
-    const resolvedSlug = post.slug || slugify(post.title);
+    const resolvedSlug = slugify(post.slug || post.title);
     const postData = {
       slug: resolvedSlug,
       title: post.title,
@@ -166,13 +166,14 @@ export async function saveBlogPost(post: BlogPost): Promise<BlogPost> {
     if (post.id && !post.id.startsWith('temp-') && post.id.length > 5) {
       // Update existing document
       await setDoc(doc(db, BLOG_COLLECTION, post.id), postData, { merge: true });
-      return post;
+      return { ...post, slug: resolvedSlug };
     } else {
       // Create new document with auto-generated ID (or custom if needed)
       const docRef = await addDoc(collection(db, BLOG_COLLECTION), postData);
       return {
         ...post,
-        id: docRef.id
+        id: docRef.id,
+        slug: resolvedSlug
       };
     }
   } catch (error) {
@@ -193,17 +194,5 @@ export async function deleteBlogPost(id: string): Promise<void> {
 }
 
 export function createSlug(title: string): string {
-  const polishChars: Record<string, string> = {
-    ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z',
-    Ą: 'a', Ć: 'c', Ę: 'e', Ł: 'l', Ń: 'n', Ó: 'o', Ś: 's', Ź: 'z', Ż: 'z'
-  };
-  return title
-    .split('')
-    .map(char => polishChars[char] || char)
-    .join('')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
+  return slugify(title);
 }
