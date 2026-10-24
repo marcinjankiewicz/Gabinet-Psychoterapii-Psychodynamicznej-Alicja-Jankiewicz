@@ -1,12 +1,13 @@
 export interface BlogPost {
   id: string;
-  slug: string; // np. "psychoterapia-psychodynamiczna-jak-wyglada-pierwsza-wizyta"
+  slug?: string; // Przyjazny adres URL pod SEO
   title: string;
   excerpt: string;
   content: string;
   image?: string;
   imagePlaceholderStyle?: string;
   date: string;
+  updatedAt?: string; // Format ISO YYYY-MM-DD dla sitemap.xml
   readTime: string;
   category: string;
   isPinned?: boolean;

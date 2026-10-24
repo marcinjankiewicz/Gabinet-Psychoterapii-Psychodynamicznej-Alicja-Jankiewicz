@@ -39,6 +39,23 @@ const BACKGROUND_PRESETS = [
   { id: 'sand', name: 'Calming Sand', style: 'bg-gradient-to-br from-[#f6f3f2] via-[#e6e2e0] to-[#cbe6d4]/20' }
 ];
 
+// 1. Funkcja generująca slug z polskich znaków
+const generateSlug = (text: string): string => {
+  const polishChars: Record<string, string> = {
+    ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z',
+    Ą: 'a', Ć: 'c', Ę: 'e', Ł: 'l', Ń: 'n', Ó: 'o', Ś: 's', Ź: 'z', Ż: 'z'
+  };
+  return text
+    .split('')
+    .map(char => polishChars[char] || char)
+    .join('')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+};
+
 export default function BlogSection({
   onBackToHome,
   onOpenBooking,
@@ -72,6 +89,7 @@ export default function BlogSection({
 
   // Form states
   const [formTitle, setFormTitle] = useState('');
+  const [formSlug, setFormSlug] = useState('');
   const [formCategory, setFormCategory] = useState('Psychoterapia');
   const [formExcerpt, setFormExcerpt] = useState('');
   const [formContent, setFormContent] = useState('');
@@ -290,6 +308,7 @@ export default function BlogSection({
     
     setEditingPostId(null);
     setFormTitle('');
+    setFormSlug('');
     setFormCategory('Psychoterapia');
     setFormExcerpt('');
     setFormContent('');
@@ -304,6 +323,7 @@ export default function BlogSection({
   const startEditPost = (post: BlogPost) => {
     setEditingPostId(post.id);
     setFormTitle(post.title);
+    setFormSlug(post?.slug || generateSlug(post.title));
     setFormCategory(post.category);
     setFormExcerpt(post.excerpt);
     setFormContent(post.content);
@@ -361,11 +381,10 @@ export default function BlogSection({
 
       const calculatedReadTime = estimateReadTime(formContent);
       const finalExcerpt = formExcerpt.trim() || (formContent.substring(0, 160) + '...');
-      const postSlug = slugify(formTitle);
 
       const postData: BlogPost = {
         id: editingPostId || '',
-        slug: postSlug,
+        slug: formSlug.trim() || generateSlug(formTitle),
         title: formTitle.trim(),
         category: formCategory,
         excerpt: finalExcerpt.trim(),
@@ -563,9 +582,28 @@ export default function BlogSection({
                     <input
                       type="text"
                       value={formTitle}
-                      onChange={(e) => setFormTitle(e.target.value)}
+                      onChange={(e) => {
+                        setFormTitle(e.target.value);
+                        if (!editingPostId) {
+                          setFormSlug(generateSlug(e.target.value));
+                        }
+                      }}
                       placeholder="np. Jak stawiać zdrowe granice w rodzinie"
                       className="w-full bg-brand-bg border border-brand-muted/20 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none rounded-xl px-4 py-3 text-sm text-brand-charcoal transition-all font-medium"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-brand-primary tracking-wider mb-2">
+                      Adres URL (Slug) *
+                    </label>
+                    <input
+                      type="text"
+                      value={formSlug}
+                      onChange={(e) => setFormSlug(generateSlug(e.target.value))}
+                      placeholder="np. czym-jest-psychoterapia-psychodynamiczna"
+                      className="w-full bg-brand-bg border border-brand-muted/20 focus:border-brand-secondary outline-none rounded-xl px-4 py-3 text-sm font-mono text-brand-charcoal"
                       required
                     />
                   </div>

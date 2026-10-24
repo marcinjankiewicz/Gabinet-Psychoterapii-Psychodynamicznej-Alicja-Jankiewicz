@@ -191,3 +191,19 @@ export async function deleteBlogPost(id: string): Promise<void> {
     handleFirestoreError(error, OperationType.DELETE, `${BLOG_COLLECTION}/${id}`);
   }
 }
+
+export function createSlug(title: string): string {
+  const polishChars: Record<string, string> = {
+    ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z',
+    Ą: 'a', Ć: 'c', Ę: 'e', Ł: 'l', Ń: 'n', Ó: 'o', Ś: 's', Ź: 'z', Ż: 'z'
+  };
+  return title
+    .split('')
+    .map(char => polishChars[char] || char)
+    .join('')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
