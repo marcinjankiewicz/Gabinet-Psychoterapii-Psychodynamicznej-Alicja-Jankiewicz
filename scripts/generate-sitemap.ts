@@ -3,7 +3,7 @@ name: Update and Upload Sitemap to Seohost
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *' # Codziennie o 3:00 nad ranem
+    - cron: '0 3 * * *' # Codziennie o 3:00 nad ranem czasu UTC
 
 jobs:
   deploy:
@@ -18,6 +18,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
+        # Zmiana z npm ci na npm install rozwiązuje błąd braku synchronizacji lockfile
         run: npm install
 
       - name: Generate fresh sitemap from Firebase
@@ -33,6 +34,7 @@ jobs:
           port: 21
           local-dir: ./public/
           server-dir: ./domains/gabinetpsychologagdansk.pl/public_html/
+          # Bezpieczne wysyłanie wyłącznie pliku sitemap.xml bez nadpisywania reszty serwera
           exclude: |
             **/*
             !sitemap.xml
