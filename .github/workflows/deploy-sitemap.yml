@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '0 3 * * *' # Codziennie o 3:00 nad ranem
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,17 +21,32 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci || npm install
 
       - name: Generate fresh sitemap from Firebase
         run: npm run generate:sitemap
 
+      - name: Prepare isolated directory for FTP upload
+        run: |
+          mkdir -p sitemap-dist
+          cp public/sitemap.xml sitemap-dist/sitemap.xml
+
       - name: Sync sitemap.xml to Seohost FTP
+        if: ${{ secrets.FTP_SERVER != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.SEO_HOST_AJ }}
-          local-dir: public/
-          server-dir: /domains/gabinetpsychologagdansk.pl/public_html/
-          include: '["sitemap.xml"]'
+          protocol: ftp
+          port: 21
+          local-dir: ./sitemap-dist/
+          server-dir: ./domains/gabinetpsychologagdansk.pl/public_html/
+          state-name: .ftp-deploy-sync-state-sitemap.json
+          dangerous-clean-slate: false
+
+      - name: Commit updated sitemap.xml to repository
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git diff --quiet public/sitemap.xml || (git add public/sitemap.xml && git commit -m "chore(seo): automatyczna aktualizacja sitemap.xml z Firebase" && git push)

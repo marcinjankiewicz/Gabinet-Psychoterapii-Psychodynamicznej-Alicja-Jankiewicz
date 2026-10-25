@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { fetchBlogPosts } from '../lib/firebase';
 import { slugify } from '../lib/slugify';
 import { BlogPost } from '../types';
-import { Calendar, Clock, ArrowLeft, User } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, User, BookOpen } from 'lucide-react';
+import BlogContentRenderer from './BlogContentRenderer';
 
 export default function BlogPostDetail({ onOpenBooking }: { onOpenBooking: () => void }) {
   const { slug } = useParams<{ slug: string }>();
@@ -88,7 +89,7 @@ export default function BlogPostDetail({ onOpenBooking }: { onOpenBooking: () =>
   };
 
   return (
-    <article className="py-16 md:py-24 max-w-[840px] mx-auto px-6">
+    <article className="py-12 md:py-24 max-w-[840px] mx-auto px-4 sm:px-6">
       {/* Wstrzyknięcie Schema.org */}
       <script 
         type="application/ld+json"
@@ -99,15 +100,15 @@ export default function BlogPostDetail({ onOpenBooking }: { onOpenBooking: () =>
         <ArrowLeft className="w-4 h-4" /> Wróć do bazy wiedzy
       </Link>
 
-      <header className="mb-10">
+      <header className="mb-8 md:mb-10">
         <span className="px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent/30 text-brand-secondary border border-brand-accent/50 uppercase tracking-wider">
           {post.category}
         </span>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-semibold text-brand-primary mt-4 mb-6 leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-semibold text-brand-primary mt-4 mb-6 leading-tight break-words">
           {post.title}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-6 text-sm text-brand-muted border-b border-brand-card/40 pb-6">
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-brand-muted border-b border-brand-card/40 pb-6">
           <span className="inline-flex items-center gap-2">
             <User className="w-4 h-4 text-brand-secondary" /> Alicja Jankiewicz
           </span>
@@ -120,11 +121,26 @@ export default function BlogPostDetail({ onOpenBooking }: { onOpenBooking: () =>
         </div>
       </header>
 
-      {/* Treść artykułu z optymalizacją czytelności */}
-      <div 
-        className="prose prose-lg prose-neutral max-w-none font-sans font-light leading-relaxed text-brand-charcoal"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      {post.image ? (
+        <div className="w-full h-56 sm:h-72 md:h-96 rounded-2xl overflow-hidden mb-8 md:mb-10 shadow-soft-lift">
+          <img
+            src={post.image}
+            alt={post.title}
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </div>
+      ) : post.imagePlaceholderStyle ? (
+        <div className={`w-full h-36 sm:h-44 md:h-52 rounded-2xl ${post.imagePlaceholderStyle} mb-8 md:mb-10 flex items-center justify-center relative overflow-hidden shadow-soft-lift`}>
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#455a65_1px,transparent_1px)] [background-size:16px_16px]" />
+          <BookOpen className="text-brand-primary/30 w-14 h-14 relative z-10" />
+        </div>
+      ) : null}
+
+      {/* Treść artykułu z zachowaniem spacji, tabulacji, enterów i formatowania */}
+      <BlogContentRenderer content={post.content} />
 
       {/* Blok E-E-A-T i konwersja (Rezerwacja konsultacji) */}
       <section className="mt-16 p-8 bg-brand-card/30 rounded-2xl border border-brand-card/60 flex flex-col sm:flex-row items-center justify-between gap-6">

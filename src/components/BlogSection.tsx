@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { BlogPost } from '../types';
 import { fetchBlogPosts, saveBlogPost, deleteBlogPost, uploadBlogImage } from '../lib/firebase';
 import { slugify } from '../lib/slugify';
+import BlogContentRenderer from './BlogContentRenderer';
 
 interface BlogSectionProps {
   onBackToHome?: () => void;
@@ -381,8 +382,10 @@ export default function BlogSection({
         }
       }
 
-      const calculatedReadTime = estimateReadTime(formContent);
-      const finalExcerpt = formExcerpt.trim() || (formContent.substring(0, 160) + '...');
+      const normalizedContent = formContent.replace(/\r\n/g, '\n').replace(/\s+$/, '');
+      const calculatedReadTime = estimateReadTime(normalizedContent);
+      const cleanExcerptFallback = normalizedContent.replace(/^[#\s*-]+/gm, '').replace(/\s+/g, ' ').trim();
+      const finalExcerpt = formExcerpt.trim() || (cleanExcerptFallback.substring(0, 160) + '...');
 
       const postData: BlogPost = {
         id: editingPostId || '',
@@ -390,7 +393,7 @@ export default function BlogSection({
         title: formTitle.trim(),
         category: formCategory,
         excerpt: finalExcerpt.trim(),
-        content: formContent.trim(),
+        content: normalizedContent,
         image: finalImageUrl,
         imagePlaceholderStyle: !finalImageUrl ? formPresetStyle : undefined,
         date: formDate || new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }),
@@ -489,40 +492,7 @@ export default function BlogSection({
                 </div>
               )}
 
-              <div className="prose prose-brand max-w-none font-sans text-brand-charcoal text-base md:text-lg leading-relaxed whitespace-pre-wrap selection:bg-brand-accent">
-                {selectedPost.content.split('\n\n').map((paragraph, index) => {
-                  if (paragraph.startsWith('## ')) {
-                    return (
-                      <h2 key={index} className="text-2xl md:text-3xl font-serif text-brand-primary font-bold mt-8 mb-4 border-b border-brand-accent/20 pb-2">
-                        {paragraph.replace('## ', '')}
-                      </h2>
-                    );
-                  }
-                  if (paragraph.startsWith('### ')) {
-                    return (
-                      <h3 key={index} className="text-xl md:text-2xl font-serif text-brand-primary font-bold mt-6 mb-3">
-                        {paragraph.replace('### ', '')}
-                      </h3>
-                    );
-                  }
-                  if (paragraph.includes('\n* ') || paragraph.includes('\n- ') || paragraph.includes('\n1. ')) {
-                    return (
-                      <div key={index} className="my-4 pl-4 border-l-2 border-brand-accent py-1 bg-brand-card/30 rounded-r-lg">
-                        {paragraph.split('\n').map((line, lIdx) => (
-                          <p key={lIdx} className="my-1.5 text-sm md:text-base text-brand-muted">
-                            {line}
-                          </p>
-                        ))}
-                      </div>
-                    );
-                  }
-                  return (
-                    <p key={index} className="mb-6 last:mb-0">
-                      {paragraph}
-                    </p>
-                  );
-                })}
-              </div>
+              <BlogContentRenderer content={selectedPost.content} />
 
               <div className="mt-16 p-8 rounded-2xl bg-brand-card/85 border border-brand-accent/40 text-center shadow-soft-lift">
                 <h3 className="font-serif text-xl text-brand-primary font-semibold mb-2">
@@ -736,9 +706,9 @@ export default function BlogSection({
                       <Sparkles size={13} className="text-brand-secondary" /> Porady pisarskie:
                     </span>
                     <ul className="text-[11px] leading-relaxed text-brand-muted space-y-1 list-disc pl-3">
-                      <li>Krótkie formy są bardziej przyswajalne dla pacjentów poszukujących pomocy.</li>
-                      <li>Podziel tekst na akapity, używając pustej linii (podwójny Enter) między nimi.</li>
-                      <li>Możesz wyróżnić śródtytuł dodając na początku linii znaki <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">###</code> (np. <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">### Praktyczna wskazówka</code>).</li>
+                      <li>Pojedynczy <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">Enter</code> przenosi tekst do nowej linii, a podwójny <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">Enter</code> tworzy nowy akapit.</li>
+                      <li>Spacje oraz klawisz <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">Tab</code> (wcięcia i tabulacja) są zachowywane dokładnie tak, jak je wpiszesz.</li>
+                      <li>Śródtytuły wyróżnisz dodając na początku linii <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">## </code> lub <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">### </code>, a listy rozpoczynając linię od <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">- </code> lub <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">1. </code>.</li>
                     </ul>
                   </div>
                 </div>
@@ -764,9 +734,22 @@ export default function BlogSection({
                   <textarea
                     value={formContent}
                     onChange={(e) => setFormContent(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const target = e.currentTarget;
+                        const start = target.selectionStart;
+                        const end = target.selectionEnd;
+                        const nextValue = formContent.substring(0, start) + '\t' + formContent.substring(end);
+                        setFormContent(nextValue);
+                        requestAnimationFrame(() => {
+                          target.selectionStart = target.selectionEnd = start + 1;
+                        });
+                      }
+                    }}
                     placeholder="Wpisz treść artykułu..."
                     rows={12}
-                    className="w-full bg-transparent border-none outline-none px-5 py-4 text-sm md:text-base text-brand-charcoal resize-y font-sans leading-relaxed"
+                    className="w-full bg-transparent border-none outline-none px-5 py-4 text-sm md:text-base text-brand-charcoal resize-y font-sans leading-relaxed whitespace-pre-wrap break-words [tab-size:4]"
                     required
                   />
                 </div>
