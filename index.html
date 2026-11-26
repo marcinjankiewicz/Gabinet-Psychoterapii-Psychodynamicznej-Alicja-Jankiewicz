@@ -13,23 +13,53 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Pozycjonowanie i Meta Tagi (SEO) -->
+
+    <!-- Pozycjonowanie i Meta Tagi (Local SEO & GEO) -->
     <meta name="google-site-verification" content="RHiysqe8pp-R_z3JtQeqAs_MFUwQ8JeoL9WQF2oBwow" />
-    <title>Psychoterapia Psychodynamiczna Gdańsk | Alicja Jankiewicz</title>
-    <meta name="description" content="Gabinet psychoterapii w Gdańsku (Jasień / Zabornia). Psychoterapia psychodynamiczna i pomoc w kryzysie. Sprawdź wolne terminy i umów bezpieczną konsultację." />
+    <title>Psychoterapeuta Gdańsk Jasień – Alicja Jankiewicz | Gabinet Psychoterapii Psychodynamicznej</title>
+    <meta
+      name="description"
+      content="Psychoterapia psychodynamiczna Gdańsk (Jasień, ul. Kartuska 356a) – Alicja Jankiewicz. Pomoc w lęku, depresji, kryzysie i relacjach. Umów konsultację."
+    />
     <meta name="author" content="Alicja Jankiewicz" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://www.gabinetpsychologagdansk.pl" />
+    <link rel="canonical" href="https://gabinetpsychologagdansk.pl/" />
 
-    <!-- Open Graph (Meta tagi dla mediów społecznościowych) -->
-    <meta property="og:title" content="Psychoterapia Psychodynamiczna Gdańsk | Alicja Jankiewicz" />
-    <meta property="og:description" content="Profesjonalna pomoc psychologiczna i psychoterapia psychodynamiczna w Gdańsku. Terapia indywidualna dorosłych, młodzieży i dzieci, psychoterapia grupowa, wsparcie w kryzysie życiowym." />
+    <!-- Open Graph (Meta tagi dla mediów społecznościowych i podglądów AI) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.gabinetpsychologagdansk.pl/" />
-    <meta property="og:image" content="https://www.gabinetpsychologagdansk.pl/alicjajankiewicz1.webp" />
     <meta property="og:locale" content="pl_PL" />
-    <meta property="og:site_name" content="Psychoterapia Alicja Jankiewicz" />
+    <meta property="og:title" content="Psychoterapeuta Gdańsk Jasień – Alicja Jankiewicz | Gabinet Psychoterapii Psychodynamicznej" />
+    <meta
+      property="og:description"
+      content="Psychoterapia psychodynamiczna Gdańsk (Jasień, ul. Kartuska 356a) – Alicja Jankiewicz. Pomoc w lęku, depresji, kryzysie i relacjach. Konsultacje i terapia (200 zł)."
+    />
+    <meta property="og:url" content="https://gabinetpsychologagdansk.pl/" />
+    <meta property="og:site_name" content="Gabinet Psychoterapii Psychodynamicznej Gdańsk – Alicja Jankiewicz" />
+    <meta property="og:image" content="https://gabinetpsychologagdansk.pl/alicjajankiewicz1.webp" />
+
+    <!-- Natychmiastowa ochrona canonical/og:url dla dynamicznych ścieżek SPA (np. nowe artykuły przed kolejnym buildem) -->
+    <script>
+      (function () {
+        var base = 'https://gabinetpsychologagdansk.pl';
+        var path = (window.location.pathname || '/').replace(/\/index\.html$/i, '').replace(/\/+$/, '');
+        if (path && path !== '/') {
+          var target = base + path;
+          var canonical = document.querySelector('link[rel="canonical"]');
+          if (canonical) canonical.setAttribute('href', target);
+          var ogUrl = document.querySelector('meta[property="og:url"]');
+          if (ogUrl) ogUrl.setAttribute('content', target);
+        }
+      })();
+    </script>
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Psychoterapeuta Gdańsk Jasień – Alicja Jankiewicz | Gabinet Psychoterapii Psychodynamicznej" />
+    <meta
+      name="twitter:description"
+      content="Psychoterapia psychodynamiczna Gdańsk (Jasień, ul. Kartuska 356a) – Alicja Jankiewicz. Pomoc w lęku, depresji, kryzysie i relacjach."
+    />
+    <meta name="twitter:image" content="https://gabinetpsychologagdansk.pl/alicjajankiewicz1.webp" />
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -37,80 +67,234 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Dane strukturyzowane Schema.org (Therapist + MedicalBusiness + FAQPage) -->
+    <!-- 1. Dane strukturyzowane Schema.org: Gabinet Psychoterapii (Psychologist + MedicalBusiness) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [
+      "@type": ["Psychologist", "MedicalBusiness"],
+      "@id": "https://gabinetpsychologagdansk.pl/#gabinet",
+      "name": "Gabinet Psychoterapii Psychodynamicznej Gdańsk – Alicja Jankiewicz",
+      "alternateName": "Gabinet Psychologa Gdańsk",
+      "url": "https://gabinetpsychologagdansk.pl/",
+      "image": "https://gabinetpsychologagdansk.pl/alicjajankiewicz1.webp",
+      "telephone": "+48514309526",
+      "email": "psycholog.jankiewicz@gmail.com",
+      "priceRange": "200 PLN",
+      "currenciesAccepted": "PLN",
+      "hasMap": "https://maps.app.goo.gl/oGZwrNsrZKj6jPQQ9",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ul. Kartuska 356a",
+        "postalCode": "80-125",
+        "addressLocality": "Gdańsk",
+        "addressRegion": "Pomorskie",
+        "addressCountry": "PL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 54.3486,
+        "longitude": 18.5724
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Gdańsk" },
+        { "@type": "Place", "name": "Gdańsk Jasień" },
+        { "@type": "Place", "name": "Morena" },
+        { "@type": "Place", "name": "Piecki-Migowo" },
+        { "@type": "Place", "name": "Wrzeszcz" },
+        { "@type": "Place", "name": "Oliwa" },
+        { "@type": "City", "name": "Sopot" },
+        { "@type": "City", "name": "Gdynia" },
+        { "@type": "AdministrativeArea", "name": "Trójmiasto" }
+      ],
+      "openingHoursSpecification": [
         {
-          "@type": ["Therapist", "MedicalBusiness"],
-          "@id": "https://www.gabinetpsychologagdansk.pl/#gabinet",
-          "name": "Gabinet Psychoterapii Psychodynamicznej Alicja Jankiewicz",
-          "url": "https://www.gabinetpsychologagdansk.pl/",
-          "image": "https://www.gabinetpsychologagdansk.pl/alicjajankiewicz1.webp",
-          "telephone": "+48514309526",
-          "email": "psycholog.jankiewicz@gmail.com",
-          "priceRange": "200 PLN",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "ul. Kartuska 356a",
-            "addressLocality": "Gdańsk",
-            "postalCode": "80-125",
-            "addressRegion": "pomorskie",
-            "addressCountry": "PL"
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "08:00",
+          "closes": "20:00"
+        }
+      ],
+      "medicalSpecialty": [
+        "Psychotherapy",
+        "Clinical Psychology"
+      ],
+      "knowsAbout": [
+        "Psychoterapia psychodynamiczna",
+        "Psychoterapia indywidualna dorosłych",
+        "Psychoterapia dzieci i młodzieży",
+        "Psychoterapia grupowa",
+        "Zaburzenia lękowe i ataki paniki",
+        "Depresja i obniżony nastrój",
+        "Wypalenie zawodowe i przewlekły stres",
+        "Kryzysy emocjonalne i życiowe",
+        "Trudności w relacjach i związkach",
+        "Wsparcie w kryzysie"
+      ],
+      "founder": {
+        "@type": "Person",
+        "@id": "https://gabinetpsychologagdansk.pl/#alicja-jankiewicz",
+        "name": "Alicja Jankiewicz",
+        "jobTitle": "Psycholog, Psychoterapeuta psychodynamiczny",
+        "url": "https://gabinetpsychologagdansk.pl/",
+        "image": "https://gabinetpsychologagdansk.pl/alicjajankiewicz1.webp",
+        "description": "Psycholog i psychoterapeuta psychodynamiczny w Gdańsku Jasieniu. Absolwentka psychologii klinicznej na Uniwersytecie Gdańskim oraz 4-letniego szkolenia psychoterapeutycznego w Krakowskim Centrum Psychodynamicznym. Pracuje w nurcie psychodynamicznym zgodnie z Kodeksem Etycznym Psychoterapeuty PTPPd pod regularną superwizją certyfikowanych superwizorów PTP.",
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Uniwersytet Gdański"
           },
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": 54.3486,
-            "longitude": 18.5724
+          {
+            "@type": "EducationalOrganization",
+            "name": "Krakowskie Centrum Psychodynamiczne"
+          }
+        ]
+      },
+      "employee": {
+        "@type": "Person",
+        "@id": "https://gabinetpsychologagdansk.pl/#alicja-jankiewicz",
+        "name": "Alicja Jankiewicz",
+        "jobTitle": "Psycholog, Psychoterapeuta psychodynamiczny",
+        "url": "https://gabinetpsychologagdansk.pl/",
+        "description": "Psycholog i psychoterapeuta psychodynamiczny pracujący zgodnie z kodeksem etycznym i poddawany regularnej superwizji.",
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Uniwersytet Gdański"
           },
-          "areaServed": [
-            { "@type": "City", "name": "Gdańsk" },
-            { "@type": "AdministrativeArea", "name": "Trójmiasto" }
-          ],
-          "medicalSpecialty": "Psychiatric",
-          "availableService": [
-            {
-              "@type": "MedicalTherapy",
-              "name": "Psychoterapia psychodynamiczna indywidualna",
-              "description": "Indywidualna terapia psychodynamiczna dla dorosłych, młodzieży i dzieci w Gdańsku."
+          {
+            "@type": "EducationalOrganization",
+            "name": "Krakowskie Centrum Psychodynamiczne"
+          }
+        ]
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Usługi psychologiczne i psychoterapeutyczne",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Konsultacja psychologiczna",
+              "description": "Wstępne 50-minutowe spotkanie konsultacyjne dla dorosłych, młodzieży lub rodziców dzieci służące poznaniu trudności i ustaleniu formy pomocy.",
+              "url": "https://gabinetpsychologagdansk.pl/"
             },
-            {
-              "@type": "MedicalTherapy",
-              "name": "Wsparcie psychologiczne w kryzysie",
-              "description": "Krótkoterminowa pomoc psychologiczna w sytuacjach kryzysowych."
-            }
-          ]
+            "price": "200",
+            "priceCurrency": "PLN"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Psychoterapia indywidualna",
+              "description": "Regularna, 50-minutowa psychoterapia psychodynamiczna dla osób dorosłych, dzieci i młodzieży w Gdańsku Jasieniu.",
+              "url": "https://gabinetpsychologagdansk.pl/psychoterapia-indywidualna-gdansk"
+            },
+            "price": "200",
+            "priceCurrency": "PLN"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Wsparcie w kryzysie",
+              "description": "Krótkoterminowa, 50-minutowa pomoc psychologiczna w nagłych kryzysach życiowych, żałobie, rozstaniu i przeciążeniu emocjonalnym.",
+              "url": "https://gabinetpsychologagdansk.pl/pomoc-w-kryzysie-gdansk"
+            },
+            "price": "200",
+            "priceCurrency": "PLN"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Psychoterapia grupowa",
+              "description": "Terapia grupowa ukierunkowana na trudności relacyjne, komunikację i rozwój osobisty w bezpiecznych, dyskretnych warunkach. Czas i koszt ustalane indywidualnie.",
+              "url": "https://gabinetpsychologagdansk.pl/"
+            },
+            "price": "200",
+            "priceCurrency": "PLN"
+          }
+        ]
+      },
+      "sameAs": [
+        "https://twojpsycholog.pl/profil-psychologa/alicja-jankiewicz-6630",
+        "https://www.ptppd.pl/czlonkowie-ptppd.html",
+        "https://maps.app.goo.gl/oGZwrNsrZKj6jPQQ9"
+      ]
+    }
+    </script>
+
+    <!-- 2. Dane strukturyzowane Schema.org: FAQPage (100% zgodne z sekcją FAQ na stronie) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://gabinetpsychologagdansk.pl/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Jak wygląda pierwsza konsultacja u psychoterapeuty i czy trzeba się przygotować?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pierwsza konsultacja psychologiczna trwa 50 minut i nie wymaga żadnego specjalnego przygotowania. Nie trzeba układać planu wypowiedzi ani wiedzieć z góry, od czego zacząć — terapeuta pomaga w rozmowie poprzez uważne, wspierające pytania. Zazwyczaj pierwsze 3–5 spotkań ma charakter konsultacji wstępnych, które służą zrozumieniu Twojej sytuacji, zebraniu wywiadu oraz wspólnemu ustaleniu celów i najodpowiedniejszej formy pomocy. Konsultacje nie zobowiązują do natychmiastowego rozpoczęcia długoterminowej terapii."
+          }
         },
         {
-          "@type": "FAQPage",
-          "@id": "https://www.gabinetpsychologagdansk.pl/#faq",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Czym jest psychoterapia psychodynamiczna i jak działa?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Psychoterapia psychodynamiczna zakłada, że ludzkim zachowaniem kierują nieświadome motywy i wzorce relacji. Terapia pozwala rozpoznać te mechanizmy i prowadzi do trwałej redukcji objawów."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Jak wygląda pierwsza wizyta u psychoterapeuty w Gdańsku?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Pierwsze spotkania mają formę konsultacji psychologicznej. Służą określeniu problemu, zebraniu wywiadu i podjęciu wspólnej decyzji o rozpoczęciu procesu psychoterapii."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Jak dojechać do gabinetu i czy dostępny jest bezpłatny parking?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Gabinet mieści się przy ul. Kartuskiej 356a w Gdańsku. Dogodny dojazd z dzielnic: Gdańsk Jasień, Ujeścisko, Morena, Karczemki oraz z obwodnicy Trójmiasta (S6). Bezpośrednio przed budynkiem dostępne są bezpłatne miejsca parkingowe dla pacjentów."
-              }
-            }
-          ]
+          "@type": "Question",
+          "name": "Czym różni się psycholog od psychoterapeuty i na czym polega nurt psychodynamiczny?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Psycholog to absolwent jednolitych studiów magisterskich z psychologii, uprawniony do diagnozy, konsultacji i wsparcia psychologicznego. Psychoterapeuta to specjalista, który dodatkowo ukończył wieloletnie podyplomowe szkolenie psychoterapeutyczne i prowadzi regularne leczenie psychoterapeutyczne pod stałą superwizją. Nurt psychodynamiczny zakłada, że na nasze obecne emocje, objawy i relacje wpływają nieświadome mechanizmy oraz wcześniejsze doświadczenia. Praca w bezpiecznej relacji terapeutycznej pozwala je zrozumieć i prowadzi do trwałej, głębokiej zmiany funkcjonowania."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Z jakimi problemami można zgłosić się do gabinetu w Gdańsku Jasieniu?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Do gabinetu przy ul. Kartuskiej 356a w Gdańsku zgłaszają się osoby dorosłe, młodzież oraz rodzice z dziećmi doświadczający m.in. przewlekłego lęku i napadów paniki, obniżonego nastroju i depresji, wypalenia zawodowego, silnego stresu, trudności w relacjach i stawianiu granic, niskiego poczucia własnej wartości, objawów psychosomatycznych oraz kryzysów życiowych (takich jak rozstanie, żałoba czy nagła zmiana sytuacji życiowej). Pomoc obejmuje konsultacje psychologiczne, psychoterapię indywidualną, wsparcie w kryzysie oraz psychoterapię grupową."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Czy obowiązuje tajemnica zawodowa i jak dbacie o dyskrecję?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tak. Jako psycholog i psychoterapeuta pracujący zgodnie z Kodeksem Etycznym Psychoterapeuty PTPPd jestem bezwzględnie zobowiązana do zachowania tajemnicy zawodowej. Poufnością objęte są zarówno wszystkie treści poruszane podczas sesji, jak i sam fakt korzystania z pomocy gabinetu. Jedynym ustawowym wyjątkiem jest sytuacja bezpośredniego zagrożenia życia lub zdrowia pacjenta bądź innych osób. Spotkania odbywają się w kameralnym, spokojnym gabinecie zapewniającym pełen komfort i prywatność."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ile kosztuje wizyta i jak wygląda regularność spotkań?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Konsultacja indywidualna, sesja psychoterapii indywidualnej oraz spotkanie wsparcia w kryzysie trwają 50 minut i kosztują 200 zł. W przypadku psychoterapii grupowej wymiar czasowy i koszt ustalane są indywidualnie. Sesje psychoterapii indywidualnej odbywają się regularnie, zazwyczaj raz lub dwa razy w tygodniu o stałej, wspólnie ustalonej porze — przewidywalny rytm spotkań tworzy bezpieczne ramy sprzyjające ciągłości procesu terapeutycznego."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Gdzie dokładnie mieści się gabinet i jak dojechać (ul. Kartuska 356a, Gdańsk Jasień)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gabinet mieści się przy ul. Kartuskiej 356a (pierwsze piętro), 80-125 Gdańsk, w dzielnicy Gdańsk Jasień. Lokalizacja zapewnia wygodny dojazd z dzielnic Jasień, Morena, Piecki-Migowo, Ujeścisko, Wrzeszcz, Oliwa i Karczemki, a także szybki dostęp z obwodnicy Trójmiasta (S6) dla osób z Sopotu i Gdyni. Bezpośrednio przed budynkiem dostępne są bezpłatne miejsca parkingowe. Komunikacją miejską można dotrzeć tramwajem (przystanek Zabornia) lub autobusem (przystanek Damroki). Gabinet przyjmuje od poniedziałku do piątku w godzinach 08:00–20:00."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Jak wygląda psychoterapia dziecięca oraz praca z młodzieżą?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Psychoterapia dzieci i młodzieży jest zawsze dostosowana do wieku i etapu rozwojowego młodego człowieka. W przypadku młodszych dzieci pierwsza konsultacja odbywa się zazwyczaj z samymi rodzicami, a w pracy z dzieckiem ważnym narzędziem obok rozmowy jest swobodna zabawa i regularne spotkania konsultacyjne z opiekunami. Praca z nastolatkami opiera się na budowaniu zaufania, wsparciu w kryzysach tożsamościowych, szkolnych i rówieśniczych z poszanowaniem prywatności młodej osoby. Gabinet działa w pełnej zgodności ze Standardami Ochrony Małoletnich (SOM)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Dla kogo przeznaczona jest psychoterapia grupowa i jak działa?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Psychoterapia grupowa to forma leczenia, w której źródłem zrozumienia i zmiany są bezpieczne interakcje między uczestnikami w obecności psychoterapeuty. Jest szczególnie pomocna dla osób doświadczających trudności w relacjach interpersonalnych, poczucia osamotnienia, wycofania społecznego, lęku społecznego czy zaburzeń osobowości. Grupa tworzy dyskretną przestrzeń, w której można przyjrzeć się własnym wzorcom budowania więzi, otrzymać wsparcie oraz przećwiczyć nowe, zdrowsze sposoby komunikacji."
+          }
         }
       ]
     }
@@ -118,7 +302,61 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <noscript>
+      <main>
+        <h1>Gabinet Psychoterapii Psychodynamicznej Gdańsk – Alicja Jankiewicz</h1>
+        <p>
+          Prywatny gabinet psychologiczny i psychoterapeutyczny w Gdańsku (dzielnica Jasień, ul. Kartuska 356a).
+          Alicja Jankiewicz — psycholog, psychoterapeuta psychodynamiczny — oferuje bezpieczną, dyskretną pomoc dla osób dorosłych, młodzieży oraz dzieci z Gdańska (Jasień, Morena, Piecki-Migowo, Wrzeszcz, Oliwa), Sopotu i Gdyni.
+        </p>
+
+        <h2>Kwalifikacje i etyka pracy</h2>
+        <p>
+          Alicja Jankiewicz jest absolwentką psychologii klinicznej na Uniwersytecie Gdańskim oraz ukończyła całościowe, 4-letnie szkolenie psychoterapeutyczne w Krakowskim Centrum Psychodynamicznym (rekomendowanym przez Polskie Towarzystwo Psychologiczne). Jest aktywnym członkiem Polskiego Towarzystwa Psychoterapii Psychodynamicznej (PTPPd). Swoją pracę prowadzi zgodnie z kodeksem etycznym, z zachowaniem tajemnicy zawodowej oraz pod stałą, regularną superwizją certyfikowanych superwizorów PTP.
+        </p>
+
+        <h2>W czym pomagam (obszary wsparcia)</h2>
+        <ul>
+          <li>Przewlekły lęk, napady paniki, lęk społeczny i napięcie emocjonalne</li>
+          <li>Depresja, obniżony nastrój, utrata energii i poczucie pustki</li>
+          <li>Trudności w relacjach, związkach i stawianiu granic oraz zaburzenia osobowości</li>
+          <li>Kryzysy życiowe i emocjonalne (żałoba, strata, rozstanie, nagłe zmiany)</li>
+          <li>Wypalenie zawodowe, przewlekły stres i objawy psychosomatyczne</li>
+          <li>Trudności emocjonalne i rozwojowe dzieci i młodzieży oraz konsultacje dla rodziców</li>
+        </ul>
+
+        <h2>Oferta i cennik</h2>
+        <ul>
+          <li>Konsultacja indywidualna (50 min) – 200 zł</li>
+          <li>Psychoterapia indywidualna dorosłych, dzieci i młodzieży (50 min) – 200 zł</li>
+          <li>Wsparcie w kryzysie emocjonalnym (50 min) – 200 zł</li>
+          <li>Psychoterapia grupowa – czas trwania i koszt ustalane indywidualnie</li>
+        </ul>
+
+        <h2>Lokalizacja, godziny przyjęć i kontakt</h2>
+        <address>
+          <strong>Gabinet Psychoterapii Psychodynamicznej Gdańsk – Alicja Jankiewicz</strong><br />
+          ul. Kartuska 356a (I piętro), 80-125 Gdańsk (dzielnica Gdańsk Jasień)<br />
+          Telefon: <a href="tel:+48514309526">+48 514 309 526</a><br />
+          E-mail: psycholog.jankiewicz@gmail.com<br />
+          Godziny przyjęć: Poniedziałek – Piątek, 08:00–20:00<br />
+          Strona główna: <a href="https://gabinetpsychologagdansk.pl/">https://gabinetpsychologagdansk.pl/</a>
+        </address>
+
+        <nav aria-label="Główne podstrony serwisu">
+          <h2>Podstrony serwisu</h2>
+          <ul>
+            <li><a href="/psychoterapia-indywidualna-gdansk">Psychoterapia indywidualna Gdańsk</a></li>
+            <li><a href="/psycholog-dzieciecy-gdansk">Psycholog dziecięcy i psychoterapia młodzieży Gdańsk</a></li>
+            <li><a href="/pomoc-w-kryzysie-gdansk">Pomoc psychologiczna w kryzysie Gdańsk</a></li>
+            <li><a href="/blog">Blog psychologiczny – artykuły i baza wiedzy</a></li>
+            <li><a href="/standardy">Standardy Ochrony Małoletnich (SOM)</a></li>
+          </ul>
+        </nav>
+      </main>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

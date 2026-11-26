@@ -1,18 +1,10 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import { initializeFirestore, getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
 import fs from 'fs';
 import path from 'path';
+import firebaseConfig from '../firebase-applet-config.json';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDt63YgXqVj1TqUdZEVgwdti0TaPwOTWDA",
-  authDomain: "gentle-dreamlet-3tgzl.firebaseapp.com",
-  projectId: "gentle-dreamlet-3tgzl",
-  storageBucket: "gentle-dreamlet-3tgzl.firebasestorage.app",
-  messagingSenderId: "586384431794",
-  appId: "1:586384431794:web:98f9f867dfcbd2df2307ab"
-};
-
-const SITE_URL = 'https://www.gabinetpsychologagdansk.pl';
+const SITE_URL = 'https://gabinetpsychologagdansk.pl';
 
 // Funkcja konwertująca tytuł z polskimi znakami na przyjazny adres URL (slug)
 function slugify(text: string): string {
@@ -54,7 +46,16 @@ function parsePolishDateToISO(dateStr: string): string {
 async function generateSitemap() {
   console.log('Pobieranie artykułów z Firebase Firestore...');
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app, "ai-studio-3bf4b229-7d58-42a0-a1e4-270ff82d2242");
+  let db;
+  try {
+    db = initializeFirestore(
+      app,
+      { experimentalForceLongPolling: true },
+      firebaseConfig.firestoreDatabaseId
+    );
+  } catch {
+    db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+  }
 
   const snapshot = await getDocs(collection(db, 'blog_posts'));
   const today = new Date().toISOString().split('T')[0];

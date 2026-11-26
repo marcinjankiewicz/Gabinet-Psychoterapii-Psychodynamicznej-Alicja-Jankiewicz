@@ -18,6 +18,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { usePageSeo } from '../hooks/usePageSeo';
 
 export type ServiceRouteSlug =
   | 'psychoterapia-indywidualna-gdansk'
@@ -68,7 +69,7 @@ export const SERVICE_PAGES_DATA: Record<ServiceRouteSlug, ServicePageMeta> = {
   'psychoterapia-indywidualna-gdansk': {
     slug: 'psychoterapia-indywidualna-gdansk',
     path: '/psychoterapia-indywidualna-gdansk',
-    canonicalUrl: 'https://www.gabinetpsychologagdansk.pl/psychoterapia-indywidualna-gdansk',
+    canonicalUrl: 'https://gabinetpsychologagdansk.pl/psychoterapia-indywidualna-gdansk',
     metaTitle: 'Psychoterapia Indywidualna Gdańsk (Jasień) – Nurt Psychodynamiczny | Alicja Jankiewicz',
     metaDescription:
       'Psychoterapia indywidualna w Gdańsku (ul. Kartuska 356a, Jasień). Leczenie zaburzeń lękowych, depresyjnych, trudności w relacjach i zaburzeń osobowości w nurcie psychodynamicznym.',
@@ -198,7 +199,7 @@ export const SERVICE_PAGES_DATA: Record<ServiceRouteSlug, ServicePageMeta> = {
   'psycholog-dzieciecy-gdansk': {
     slug: 'psycholog-dzieciecy-gdansk',
     path: '/psycholog-dzieciecy-gdansk',
-    canonicalUrl: 'https://www.gabinetpsychologagdansk.pl/psycholog-dzieciecy-gdansk',
+    canonicalUrl: 'https://gabinetpsychologagdansk.pl/psycholog-dzieciecy-gdansk',
     metaTitle: 'Psycholog Dziecięcy i Psychoterapeuta Młodzieży Gdańsk (Jasień) | Alicja Jankiewicz',
     metaDescription:
       'Psycholog dziecięcy i psychoterapia młodzieży w Gdańsku (ul. Kartuska 356a, Jasień). Wsparcie w kryzysach rozwojowych, lękach, obniżonym nastroju i trudnościach rówieśniczych.',
@@ -322,7 +323,7 @@ export const SERVICE_PAGES_DATA: Record<ServiceRouteSlug, ServicePageMeta> = {
   'pomoc-w-kryzysie-gdansk': {
     slug: 'pomoc-w-kryzysie-gdansk',
     path: '/pomoc-w-kryzysie-gdansk',
-    canonicalUrl: 'https://www.gabinetpsychologagdansk.pl/pomoc-w-kryzysie-gdansk',
+    canonicalUrl: 'https://gabinetpsychologagdansk.pl/pomoc-w-kryzysie-gdansk',
     metaTitle: 'Pomoc Psychologiczna w Kryzysie Gdańsk – Interwencja i Wsparcie | Alicja Jankiewicz',
     metaDescription:
       'Pomoc psychologiczna w kryzysie w Gdańsku (ul. Kartuska 356a, Jasień). Krótkoterminowe wsparcie w żałobie, po rozstaniu, utracie pracy, nagłych zmianach życiowych i przeciążeniu.',
@@ -442,7 +443,7 @@ export const SERVICE_PAGES_DATA: Record<ServiceRouteSlug, ServicePageMeta> = {
       {
         question: 'Co zrobić w sytuacji nagłego zagrożenia życia lub ostrego kryzysu w nocy?',
         answer:
-          'Gabinet prywatny prowadzi wizyty po wcześniejszym umówieniu terminu i nie pełni całodobowego dyżuru medycznego. W sytuacji bezpośredniego zagrożenia życia lub zdrowia należy niezwłocznie zadzwonić pod numer alarmowy 112, zgłosić się na najbliższą Izbę Przyjęć szpitala psychiatrycznego (np. Wojewódzki Szpital Psychiatryczny w Gdańsku przy ul. Srebrniki) lub skorzystać z całodobowego Centrum Wsparcia (tel. 800 70 2222).'
+          'Gabinet prywatny prowadzi wizyty po wcześniejszym umówieniu terminu i nie pełni całodobowego dyżuru medycznego. W sytuacji bezpośredniego zagrożenia życia lub zdrowia należy niezwłocznie zadzwonić pod numer alarmowy 112, zgłosić się na najbliższą Izbę Przyjęć szpitala psychiatrycznego (np. Wojewódzki Szpital Psychiatryczny w Gdańsku przy ul. Srebrniki), skorzystać z całodobowego Centrum Wsparcia (tel. 800 70 2222) lub zadzwonić całodobowo do Ośrodka Interwencji Kryzysowej w Gdańsku (tel. +48 58 511 01 21 oraz 58 511 01 22), gdzie również można uzyskać pomoc.'
       }
     ]
   }
@@ -466,18 +467,15 @@ export default function ServiceLandingPage({
   const navigate = useNavigate();
   const page = SERVICE_PAGES_DATA[slug];
 
+  usePageSeo({
+    title: page.metaTitle,
+    description: page.metaDescription,
+    canonicalPath: page.path,
+    ogType: 'website',
+  });
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.title = page.metaTitle;
-    const setMeta = (selector: string, attr: string, val: string) => {
-      const el = document.querySelector(selector);
-      if (el) el.setAttribute(attr, val);
-    };
-    setMeta('meta[name="description"]', 'content', page.metaDescription);
-    setMeta('meta[property="og:title"]', 'content', page.metaTitle);
-    setMeta('meta[property="og:description"]', 'content', page.metaDescription);
-    setMeta('meta[property="og:url"]', 'content', page.canonicalUrl);
-    setMeta('link[rel="canonical"]', 'href', page.canonicalUrl);
   }, [page]);
 
   const otherServices = (Object.keys(SERVICE_PAGES_DATA) as ServiceRouteSlug[]).filter(
@@ -496,9 +494,9 @@ export default function ServiceLandingPage({
   };
 
   return (
-    <article className="pb-20 pt-6 md:pt-10 bg-brand-bg">
+    <article className="pb-6 md:pb-8 pt-6 md:pt-8 bg-brand-bg">
       {/* Breadcrumb & Top Navigation */}
-      <div className="max-w-[1140px] mx-auto px-6 mb-8">
+      <div className="max-w-[1140px] mx-auto px-6 mb-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm text-brand-muted">
             <a
@@ -534,7 +532,7 @@ export default function ServiceLandingPage({
       </div>
 
       {/* Hero Section with H1 */}
-      <header className="max-w-[1140px] mx-auto px-6 mb-14 md:mb-20">
+      <header className="max-w-[1140px] mx-auto px-6 mb-10 md:mb-14">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -630,8 +628,8 @@ export default function ServiceLandingPage({
       </header>
 
       {/* Indications Grid */}
-      <section className="max-w-[1140px] mx-auto px-6 mb-16 md:mb-24">
-        <div className="max-w-[760px] mb-10">
+      <section className="max-w-[1140px] mx-auto px-6 mb-10 md:mb-14">
+        <div className="max-w-[760px] mb-8">
           <h2 className="text-2xl sm:text-3xl font-serif font-semibold text-brand-primary mb-3">
             {page.indicationsTitle}
           </h2>
@@ -663,7 +661,7 @@ export default function ServiceLandingPage({
       </section>
 
       {/* Main Exhaustive Article Content + Author Sidebar */}
-      <section className="max-w-[1140px] mx-auto px-6 mb-16 md:mb-24">
+      <section className="max-w-[1140px] mx-auto px-6 mb-10 md:mb-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           {/* Deep Article Column */}
           <div className="lg:col-span-8 flex flex-col gap-12">
@@ -780,9 +778,9 @@ export default function ServiceLandingPage({
       </section>
 
       {/* Step-by-Step Process Section */}
-      <section className="max-w-[1140px] mx-auto px-6 mb-16 md:mb-24">
+      <section className="max-w-[1140px] mx-auto px-6 mb-10 md:mb-14">
         <div className="bg-brand-card/75 rounded-3xl p-7 sm:p-10 md:p-12 border border-brand-card">
-          <div className="max-w-[680px] mb-10">
+          <div className="max-w-[680px] mb-8">
             <span className="text-xs uppercase tracking-widest font-semibold text-brand-secondary block mb-2">
               Przebieg współpracy krok po kroku
             </span>
@@ -815,7 +813,7 @@ export default function ServiceLandingPage({
       </section>
 
       {/* Dedicated FAQ for this Service */}
-      <section className="max-w-[1140px] mx-auto px-6 mb-16 md:mb-24">
+      <section className="max-w-[1140px] mx-auto px-6 mb-10 md:mb-14">
         <div className="max-w-[760px] mb-8">
           <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-secondary mb-2">
             <HelpCircle size={14} />
@@ -843,7 +841,7 @@ export default function ServiceLandingPage({
 
       {/* Cross-linking to the other dedicated service routes */}
       <section className="max-w-[1140px] mx-auto px-6">
-        <div className="border-t border-brand-card pt-12">
+        <div className="border-t border-brand-card pt-8 md:pt-10">
           <h2 className="text-xl sm:text-2xl font-serif font-semibold text-brand-primary mb-6">
             Pozostałe specjalistyczne obszary pomocy w gabinecie:
           </h2>

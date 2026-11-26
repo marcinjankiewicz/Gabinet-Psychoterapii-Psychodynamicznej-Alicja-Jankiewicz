@@ -21,6 +21,7 @@ import { BlogPost } from '../types';
 import { fetchBlogPosts, saveBlogPost, deleteBlogPost, uploadBlogImage } from '../lib/firebase';
 import { slugify } from '../lib/slugify';
 import BlogContentRenderer from './BlogContentRenderer';
+import { CANONICAL_BASE_URL, parsePolishDateToIso, usePageSeo } from '../hooks/usePageSeo';
 
 interface BlogSectionProps {
   onBackToHome?: () => void;
@@ -157,104 +158,58 @@ export default function BlogSection({
     }
   }, [activeSlug, posts]);
 
-  // Dynamic SEO metadata + Schema.org BlogPosting for individual article view
-  useEffect(() => {
-    const schemaScriptId = 'blog-post-schema-jsonld';
-    const existingScript = document.getElementById(schemaScriptId);
-    if (existingScript) {
-      existingScript.remove();
-    }
+  // Dynamic SEO metadata + Schema.org BlogPosting via usePageSeo
+  const activePostSlug = selectedPost ? selectedPost.slug || slugify(selectedPost.title) : '';
+  const activePostCanonicalUrl = activePostSlug
+    ? `${CANONICAL_BASE_URL}/blog/${activePostSlug}`
+    : `${CANONICAL_BASE_URL}/blog`;
+  const activePostDescription = selectedPost
+    ? selectedPost.excerpt ||
+      selectedPost.content.replace(/[#*]/g, '').substring(0, 155).trim() + '...'
+    : 'Artykuły o psychoterapii psychodynamicznej, zdrowiu psychicznym, wsparciu dzieci i młodzieży oraz radzeniu sobie z kryzysem emocjonalnym – Gdańsk Jasień.';
+  const activePostImage =
+    selectedPost?.image && selectedPost.image.startsWith('http')
+      ? selectedPost.image
+      : `${CANONICAL_BASE_URL}/alicjajankiewicz1.webp`;
 
-    if (selectedPost) {
-      const postSlug = selectedPost.slug || slugify(selectedPost.title);
-      const canonicalUrl = `https://www.gabinetpsychologagdansk.pl/blog/${postSlug}`;
-      const seoTitle = `${selectedPost.title} | Blog Psychologiczny — Alicja Jankiewicz Gdańsk`;
-      const seoDescription =
-        selectedPost.excerpt ||
-        selectedPost.content.replace(/[#*]/g, '').substring(0, 155).trim() + '...';
-      const seoImage =
-        selectedPost.image && selectedPost.image.startsWith('http')
-          ? selectedPost.image
-          : 'https://www.gabinetpsychologagdansk.pl/alicjajankiewicz1.webp';
-
-      document.title = seoTitle;
-
-      const setMeta = (selector: string, attr: string, val: string) => {
-        const el = document.querySelector(selector);
-        if (el) el.setAttribute(attr, val);
-      };
-
-      setMeta('meta[name="description"]', 'content', seoDescription);
-      setMeta('meta[property="og:title"]', 'content', seoTitle);
-      setMeta('meta[property="og:description"]', 'content', seoDescription);
-      setMeta('meta[property="og:url"]', 'content', canonicalUrl);
-      setMeta('meta[property="og:type"]', 'content', 'article');
-      setMeta('meta[property="og:image"]', 'content', seoImage);
-      setMeta('link[rel="canonical"]', 'href', canonicalUrl);
-
-      const blogPostingSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        '@id': `${canonicalUrl}#article`,
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id': canonicalUrl,
-        },
-        headline: selectedPost.title,
-        description: seoDescription,
-        image: seoImage,
-        articleSection: selectedPost.category,
-        inLanguage: 'pl-PL',
-        author: {
-          '@type': 'Person',
-          name: 'Alicja Jankiewicz',
-          jobTitle: 'Psycholog, Psychoterapeuta Psychodynamiczny',
-          url: 'https://www.gabinetpsychologagdansk.pl/',
-        },
-        publisher: {
-          '@type': 'Therapist',
-          '@id': 'https://www.gabinetpsychologagdansk.pl/#gabinet',
-          name: 'Gabinet Psychoterapii Psychodynamicznej Alicja Jankiewicz',
-          logo: {
-            '@type': 'ImageObject',
-            url: 'https://www.gabinetpsychologagdansk.pl/alicjajankiewicz1.webp',
+  usePageSeo({
+    title: selectedPost
+      ? `${selectedPost.title} | Blog Psychologiczny – Alicja Jankiewicz Gdańsk`
+      : 'Artykuły i Baza Wiedzy – Psychoterapia Psychodynamiczna Gdańsk | Alicja Jankiewicz',
+    description: activePostDescription,
+    canonicalPath: selectedPost ? `/blog/${activePostSlug}` : '/blog',
+    ogType: selectedPost ? 'article' : 'website',
+    ogImage: activePostImage,
+    jsonLd: selectedPost
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          '@id': `${activePostCanonicalUrl}#article`,
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': activePostCanonicalUrl,
           },
-        },
-        url: canonicalUrl,
-      };
-
-      const script = document.createElement('script');
-      script.id = schemaScriptId;
-      script.type = 'application/ld+json';
-      script.text = JSON.stringify(blogPostingSchema);
-      document.head.appendChild(script);
-    } else {
-      const defaultBlogTitle =
-        'Artykuły i Baza Wiedzy – Psychoterapia Psychodynamiczna Gdańsk | Alicja Jankiewicz';
-      const defaultBlogDesc =
-        'Artykuły o psychoterapii psychodynamicznej, zdrowiu psychicznym, wsparciu dzieci i młodzieży oraz radzeniu sobie z kryzysem emocjonalnym.';
-      const defaultBlogUrl = 'https://www.gabinetpsychologagdansk.pl/blog';
-
-      document.title = defaultBlogTitle;
-      const setMeta = (selector: string, attr: string, val: string) => {
-        const el = document.querySelector(selector);
-        if (el) el.setAttribute(attr, val);
-      };
-      setMeta('meta[name="description"]', 'content', defaultBlogDesc);
-      setMeta('meta[property="og:title"]', 'content', defaultBlogTitle);
-      setMeta('meta[property="og:description"]', 'content', defaultBlogDesc);
-      setMeta('meta[property="og:url"]', 'content', defaultBlogUrl);
-      setMeta('meta[property="og:type"]', 'content', 'website');
-      setMeta('link[rel="canonical"]', 'href', defaultBlogUrl);
-    }
-
-    return () => {
-      const cleanupScript = document.getElementById(schemaScriptId);
-      if (cleanupScript) {
-        cleanupScript.remove();
-      }
-    };
-  }, [selectedPost]);
+          headline: selectedPost.title,
+          description: activePostDescription,
+          image: activePostImage,
+          datePublished: parsePolishDateToIso(selectedPost.date),
+          articleSection: selectedPost.category,
+          inLanguage: 'pl-PL',
+          author: {
+            '@type': 'Person',
+            '@id': `${CANONICAL_BASE_URL}/#alicja-jankiewicz`,
+            name: 'Alicja Jankiewicz',
+            jobTitle: 'Psycholog, Psychoterapeuta psychodynamiczny',
+            url: `${CANONICAL_BASE_URL}/`,
+          },
+          publisher: {
+            '@id': `${CANONICAL_BASE_URL}/#gabinet`,
+          },
+          url: activePostCanonicalUrl,
+        }
+      : null,
+    jsonLdId: 'blog-post-schema-jsonld',
+  });
 
   const savePostsToCache = (newPosts: BlogPost[]) => {
     setPosts(newPosts);
@@ -382,7 +337,10 @@ export default function BlogSection({
         }
       }
 
-      const normalizedContent = formContent.replace(/\r\n/g, '\n').replace(/\s+$/, '');
+      const normalizedContent = formContent
+        .replace(/[\u200B-\u200D\uFEFF]/g, '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\s+$/, '');
       const calculatedReadTime = estimateReadTime(normalizedContent);
       const cleanExcerptFallback = normalizedContent.replace(/^[#\s*-]+/gm, '').replace(/\s+/g, ' ').trim();
       const finalExcerpt = formExcerpt.trim() || (cleanExcerptFallback.substring(0, 160) + '...');
@@ -434,7 +392,7 @@ export default function BlogSection({
     : posts.filter(p => p.category === selectedCategory);
 
   return (
-    <div className="max-w-[1140px] mx-auto px-6 py-12" id="blog-view">
+    <div className="max-w-[1140px] mx-auto px-6 py-8 md:py-10" id="blog-view">
       <AnimatePresence mode="wait">
         
         {/* Full Post Reader Mode */}
@@ -478,7 +436,7 @@ export default function BlogSection({
                 <div className="w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-10 shadow-soft-lift">
                   <img 
                     src={selectedPost.image} 
-                    alt={selectedPost.title} 
+                    alt={`${selectedPost.title} – artykuł psychologiczny, Gabinet Psychoterapii Gdańsk`} 
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                     fetchPriority="high" 
@@ -495,11 +453,11 @@ export default function BlogSection({
               <BlogContentRenderer content={selectedPost.content} />
 
               <div className="mt-16 p-8 rounded-2xl bg-brand-card/85 border border-brand-accent/40 text-center shadow-soft-lift">
-                <h3 className="font-serif text-xl text-brand-primary font-semibold mb-2">
-                  Potrzebujesz profesjonalnej rozmowy?
-                </h3>
+                <h2 className="font-serif text-xl text-brand-primary font-semibold mb-2">
+                  Potrzebujesz spokojnej, profesjonalnej rozmowy?
+                </h2>
                 <p className="text-brand-muted text-sm max-w-lg mx-auto mb-6">
-                  Jeśli poruszane tematy rezonują z Twoimi własnymi trudnościami, zapraszam na indywidualną konsultację psychoterapeutyczną w moim gabinecie w Gdańsku.
+                  Jeśli poruszane tematy rezonują z Twoimi trudnościami, zapraszam na pierwszą konsultację psychologiczną w moim gabinecie w Gdańsku (dzielnica Jasień, ul. Kartuska 356a).
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <button
@@ -708,7 +666,7 @@ export default function BlogSection({
                     <ul className="text-[11px] leading-relaxed text-brand-muted space-y-1 list-disc pl-3">
                       <li>Pojedynczy <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">Enter</code> przenosi tekst do nowej linii, a podwójny <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">Enter</code> tworzy nowy akapit.</li>
                       <li>Spacje oraz klawisz <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">Tab</code> (wcięcia i tabulacja) są zachowywane dokładnie tak, jak je wpiszesz.</li>
-                      <li>Śródtytuły wyróżnisz dodając na początku linii <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">## </code> lub <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">### </code>, a listy rozpoczynając linię od <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">- </code> lub <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">1. </code>.</li>
+                      <li>Śródtytuły wyróżnisz dodając na początku linii <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">##</code> lub <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">###</code>, a listy rozpoczynając linię od <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">-</code>, <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">•</code> lub <code className="bg-brand-accent/35 px-1 py-0.5 rounded font-mono text-[9px]">1.</code> (działają ze spacją oraz bez spacji).</li>
                     </ul>
                   </div>
                 </div>
@@ -801,7 +759,7 @@ export default function BlogSection({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="space-y-12"
+            className="space-y-8 md:space-y-10"
           >
             {/* Powrót do strony głównej */}
             <div className="flex justify-start">

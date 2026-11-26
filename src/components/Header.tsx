@@ -151,7 +151,7 @@ export default function Header({
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-7">
+        <nav aria-label="Nawigacja główna" className="hidden md:flex items-center gap-7">
           {navLinks.map((link) => {
             if (link.type === 'oferta') {
               return (
@@ -256,7 +256,7 @@ export default function Header({
             transition={{ duration: 0.25 }}
             className="md:hidden bg-brand-bg border-b border-brand-card overflow-hidden"
           >
-            <div className="px-6 py-4 flex flex-col gap-3">
+            <nav aria-label="Nawigacja mobilna" className="px-6 py-4 flex flex-col gap-3">
               {navLinks.map((link) => (
                 <React.Fragment key={link.name}>
                   <a
@@ -304,7 +304,7 @@ export default function Header({
                 <Calendar size={18} />
                 Umów wizytę
               </button>
-            </div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>

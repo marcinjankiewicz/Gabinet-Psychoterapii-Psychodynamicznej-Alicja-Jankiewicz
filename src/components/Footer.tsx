@@ -48,7 +48,7 @@ export default function Footer({
     }
   };
 
-  const handleBlogNav = (e: React.MouseEvent) => {
+  const handleBlogNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (onNavigateToBlog) {
       onNavigateToBlog();
@@ -58,7 +58,7 @@ export default function Footer({
     }
   };
 
-  const handleStandardsNav = (e: React.MouseEvent) => {
+  const handleStandardsNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (onNavigateToStandards) {
       onNavigateToStandards();
@@ -69,28 +69,41 @@ export default function Footer({
   };
 
   return (
-    <footer className="bg-brand-card/25 border-t border-brand-card py-16 text-brand-charcoal">
+    <footer className="bg-brand-card/25 border-t border-brand-card py-12 md:py-14 text-brand-charcoal">
       <div className="max-w-[1140px] mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
         
-        {/* Bio segment column */}
+        {/* Bio & NAP segment column */}
         <div className="md:col-span-4 flex flex-col gap-4">
           <span className="text-xl font-serif font-semibold tracking-tight text-brand-primary">
             Alicja Jankiewicz
           </span>
           <p className="text-brand-muted font-sans font-light text-sm max-w-[360px] leading-relaxed">
-            Gabinet psychoterapii psychodynamicznej.<br />
-            Profesjonalne wsparcie psychologiczne oraz psychoterapia indywidualna dorosłych, dzieci i młodzieży w Gdańsku.<br />
-            <span className="block mt-2 text-brand-secondary/90 font-normal">
-              Dogodny dojazd z dzielnic: Gdańsk Jasień, Ujeścisko, Morena, Karczemki oraz z obwodnicy Trójmiasta (S6).
-            </span>
+            Gabinet Psychoterapii Psychodynamicznej Gdańsk – Alicja Jankiewicz.<br />
+            Profesjonalne wsparcie psychologiczne oraz psychoterapia indywidualna dorosłych, dzieci i młodzieży w Gdańsku.
           </p>
+          <address className="not-italic text-xs text-brand-muted font-sans leading-relaxed space-y-1 pt-1 border-t border-brand-card/80 max-w-[360px]">
+            <p className="font-medium text-brand-primary">
+              ul. Kartuska 356a, 80-125 Gdańsk (Gdańsk Jasień)
+            </p>
+            <p>
+              Tel.:{' '}
+              <a href="tel:+48514309526" className="hover:text-brand-primary font-medium transition-colors">
+                +48 514 309 526
+              </a>{' '}
+              &bull; E-mail: psycholog.jankiewicz@gmail.com
+            </p>
+            <p>Godziny przyjęć: Poniedziałek – Piątek, 08:00–20:00</p>
+            <p className="text-brand-secondary/90 pt-0.5">
+              Obszar działania: Gdańsk (Jasień, Morena, Piecki-Migowo, Wrzeszcz, Oliwa), Sopot, Gdynia.
+            </p>
+          </address>
         </div>
 
         {/* Dedicated SEO Services Column */}
         <div className="md:col-span-3 flex flex-col gap-4">
-          <h4 className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
             Obszary pomocy
-          </h4>
+          </h2>
           <ul className="flex flex-col gap-2.5 text-sm">
             <li>
               <a
@@ -121,7 +134,7 @@ export default function Footer({
             </li>
             <li>
               <a
-                href="#oferta"
+                href="/#oferta"
                 onClick={(e) => handleHomeLink(e, '#oferta')}
                 className="text-brand-muted hover:text-brand-primary font-medium transition-colors cursor-pointer"
               >
@@ -133,13 +146,13 @@ export default function Footer({
 
         {/* Navigation column */}
         <div className="md:col-span-2 flex flex-col gap-4">
-          <h4 className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
             Nawigacja
-          </h4>
+          </h2>
           <ul className="flex flex-col gap-2.5 text-sm">
             <li>
               <a 
-                href="#home" 
+                href="/#home" 
                 onClick={(e) => handleHomeLink(e, '#home')}
                 className="text-brand-muted hover:text-brand-primary font-medium transition-colors cursor-pointer"
               >
@@ -148,7 +161,7 @@ export default function Footer({
             </li>
             <li>
               <a 
-                href="#o-mnie" 
+                href="/#o-mnie" 
                 onClick={(e) => handleHomeLink(e, '#o-mnie')}
                 className="text-brand-muted hover:text-brand-primary font-medium transition-colors cursor-pointer"
               >
@@ -157,7 +170,7 @@ export default function Footer({
             </li>
             <li>
               <a 
-                href="#faq" 
+                href="/#faq" 
                 onClick={(e) => handleHomeLink(e, '#faq')}
                 className="text-brand-muted hover:text-brand-primary font-medium transition-colors cursor-pointer"
               >
@@ -166,7 +179,7 @@ export default function Footer({
             </li>
             <li>
               <a 
-                href="#kontakt" 
+                href="/#kontakt" 
                 onClick={(e) => handleHomeLink(e, '#kontakt')}
                 className="text-brand-muted hover:text-brand-primary font-medium transition-colors cursor-pointer"
               >
@@ -174,32 +187,32 @@ export default function Footer({
               </a>
             </li>
             <li>
-              <button 
-                type="button"
+              <a
+                href="/blog"
                 onClick={handleBlogNav}
                 className="text-brand-muted hover:text-brand-primary font-medium transition-colors flex items-center cursor-pointer text-left"
               >
                 Blog
-              </button>
+              </a>
             </li>
             <li>
-              <button 
-                type="button"
+              <a
+                href="/standardy"
                 onClick={handleStandardsNav}
                 className="text-brand-secondary hover:text-brand-primary font-semibold transition-colors flex items-center gap-1 cursor-pointer text-left"
               >
                 <ShieldCheck size={14} />
                 Ochrona Dzieci
-              </button>
+              </a>
             </li>
           </ul>
         </div>
 
         {/* Important profile and patient links */}
         <div className="md:col-span-3 flex flex-col gap-4">
-          <h4 className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
             Zaufane portale i Social
-          </h4>
+          </h2>
           <ul className="flex flex-col gap-3 text-sm">
             <li>
               <a 
@@ -234,18 +247,18 @@ export default function Footer({
       </div>
 
       {/* Sub-footer bottom bar */}
-      <div className="max-w-[1140px] mx-auto px-6 mt-12 pt-8 border-t border-brand-card/75 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-brand-muted/65">
+      <div className="max-w-[1140px] mx-auto px-6 mt-10 pt-6 border-t border-brand-card/75 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-brand-muted/65">
         <div>
           &copy; {currentYear} Alicja Jankiewicz &bull; Gabinet psychoterapii psychodynamicznej Gdańsk
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center sm:justify-end">
-          <button 
-            type="button"
+          <a
+            href="/standardy"
             onClick={handleStandardsNav}
             className="hover:text-brand-primary transition-colors cursor-pointer text-brand-secondary font-semibold"
           >
             Standardy Ochrony Małoletnich (SOM)
-          </button>
+          </a>
           <button 
             type="button"
             onClick={(e) => {

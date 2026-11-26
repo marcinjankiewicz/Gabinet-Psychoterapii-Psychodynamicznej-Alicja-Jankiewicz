@@ -6,5 +6,7 @@
   "firestoreDatabaseId": "ai-studio-3bf4b229-7d58-42a0-a1e4-270ff82d2242",
   "storageBucket": "gentle-dreamlet-3tgzl.firebasestorage.app",
   "messagingSenderId": "586384431794",
-  "measurementId": ""
+  "measurementId": "",
+  "oAuthClientId": "586384431794-us8gukfji92fvr0itnfldqo28bvuvpbt.apps.googleusercontent.com",
+  "recaptchaSiteKey": ""
 }

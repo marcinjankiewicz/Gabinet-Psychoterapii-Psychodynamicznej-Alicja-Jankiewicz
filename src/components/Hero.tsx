@@ -1,16 +1,25 @@
 import React from 'react';
-import { Calendar, ArrowDown } from 'lucide-react';
+import { Calendar, ArrowDown, GraduationCap, ShieldCheck, Eye } from 'lucide-react';
 import { motion } from 'motion/react';
+import { usePageSeo } from '../hooks/usePageSeo';
 
 interface HeroProps {
   onOpenBooking: () => void;
 }
 
 export default function Hero({ onOpenBooking }: HeroProps) {
+  usePageSeo({
+    title: 'Psychoterapeuta Gdańsk Jasień – Alicja Jankiewicz | Gabinet Psychoterapii Psychodynamicznej',
+    description:
+      'Psychoterapia psychodynamiczna Gdańsk (Jasień, ul. Kartuska 356a) – Alicja Jankiewicz. Pomoc w lęku, depresji, kryzysie i relacjach. Umów konsultację.',
+    canonicalPath: '/',
+    ogType: 'website',
+  });
+
   return (
-    <section id="home" className="py-12 md:py-24 max-w-[1140px] mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+    <section id="home" className="py-8 md:py-12 lg:py-14 max-w-[1140px] mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
       {/* Text column */}
-      <div className="md:col-span-7 flex flex-col items-start gap-6">
+      <div className="md:col-span-7 flex flex-col items-start gap-5">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -24,9 +33,9 @@ export default function Hero({ onOpenBooking }: HeroProps) {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold tracking-wider uppercase bg-brand-accent/40 text-brand-secondary border border-brand-accent/60 mt-3"
+          className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold tracking-wider uppercase bg-brand-accent/40 text-brand-secondary border border-brand-accent/60"
         >
-          Alicja Jankiewicz — Gabinet Psychoterapii (Gdańsk Jasień / Ujeścisko)
+          Alicja Jankiewicz — Gabinet Psychoterapii (Gdańsk Jasień, ul. Kartuska 356a)
         </motion.p>
 
         <motion.p
@@ -35,7 +44,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-brand-muted text-lg sm:text-xl font-sans font-light leading-relaxed max-w-[540px]"
         >
-          Wspieram w procesie zmiany, pomagając odnaleźć równowagę i zrozumienie własnych potrzeb. Zapraszam na profesjonalną psychoterapię indywidualną (dorosłych, dzieci i młodzieży) oraz grupową w Gdańsku (dzielnica Jasień, blisko Kokoszki, Ujeścisko-Łostowice oraz Piecki-Migowo).
+          Wspieram w procesie zmiany, pomagając odnaleźć równowagę i zrozumienie własnych potrzeb. Zapraszam na profesjonalną psychoterapię indywidualną (dorosłych, dzieci i młodzieży) oraz grupową w Gdańsku (dzielnica Jasień, dogodny dojazd z dzielnic Morena, Piecki-Migowo, Wrzeszcz, Oliwa oraz z Sopotu i Gdyni).
         </motion.p>
 
         <motion.div
@@ -48,7 +57,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
             whileHover={{ scale: 1.02, translateY: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={onOpenBooking}
-            className="flex items-center justify-center gap-2 bg-brand-primary text-white font-serif px-7 py-3.5 rounded-xl text-base font-semibold shadow-soft-lift hover:bg-brand-primary/95 transition-all duration-200"
+            className="flex items-center justify-center gap-2 bg-brand-primary text-white font-serif px-7 py-3.5 rounded-xl text-base font-semibold shadow-soft-lift hover:bg-brand-primary/95 transition-all duration-200 cursor-pointer"
           >
             <Calendar size={18} />
             Umów wizytę
@@ -64,9 +73,31 @@ export default function Hero({ onOpenBooking }: HeroProps) {
             <ArrowDown size={16} className="text-brand-primary/70 animate-bounce" />
           </motion.a>
         </motion.div>
+
+        {/* Zwięzły pasek sygnałów zaufania E-E-A-T */}
+        <motion.ul
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.55 }}
+          aria-label="Kwalifikacje i standardy etyczne gabinetu"
+          className="flex flex-wrap items-center gap-x-5 gap-y-2.5 pt-3 border-t border-brand-card text-xs text-brand-muted font-medium"
+        >
+          <li className="inline-flex items-center gap-1.5">
+            <GraduationCap size={14} className="text-brand-secondary shrink-0" />
+            <span>Psychologia kliniczna (UG) &amp; 4-letnie szkolenie KCP</span>
+          </li>
+          <li className="inline-flex items-center gap-1.5">
+            <Eye size={14} className="text-brand-secondary shrink-0" />
+            <span>Regularna superwizja (PTP)</span>
+          </li>
+          <li className="inline-flex items-center gap-1.5">
+            <ShieldCheck size={14} className="text-brand-secondary shrink-0" />
+            <span>Pełna tajemnica zawodowa</span>
+          </li>
+        </motion.ul>
       </div>
 
-      {/* Decorative typewriter image */}
+      {/* Decorative gabinet image */}
       <div className="md:col-span-5 relative w-full flex justify-start md:justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -91,7 +122,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                 target.src = 'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&q=80&w=800';
               }
             }}
-            alt="Przytulny, nowoczesny gabinet terapeutyczny Alicji Jankiewicz - bezpieczna przestrzeń do rozmów"
+            alt="Wnętrze Gabinetu Psychoterapii Psychodynamicznej Alicji Jankiewicz w Gdańsku Jasieniu przy ul. Kartuskiej 356a – spokojna przestrzeń do rozmów"
             className="block md:hidden w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700"
             referrerPolicy="no-referrer"
           />
@@ -113,7 +144,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                 target.src = 'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&q=80&w=800';
               }
             }}
-            alt="Przytulny, nowoczesny gabinet terapeutyczny Alicji Jankiewicz - bezpieczna przestrzeń do rozmów"
+            alt="Gabinet Psychoterapii Psychodynamicznej Alicji Jankiewicz w Gdańsku Jasieniu (ul. Kartuska 356a) – bezpieczna, dyskretna przestrzeń terapeutyczna"
             className="hidden md:block w-full h-full object-cover object-left lg:object-center hover:scale-105 transition-transform duration-700"
             referrerPolicy="no-referrer"
           />

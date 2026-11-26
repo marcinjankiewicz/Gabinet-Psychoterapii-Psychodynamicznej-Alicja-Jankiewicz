@@ -1,0 +1,110 @@
+# ==============================================================================
+# GABINET PSYCHOTERAPII ALICJA JANKIEWICZ - KONFIGURACJA LITESPEED / APACHE
+# Domena kanoniczna: https://gabinetpsychologagdansk.pl (bez www, bez slasha na podstronach)
+# ==============================================================================
+
+# 1. KODOWANIE, INDEKSOWANIE KATALOGÓW I WYŁĄCZENIE WYMUSZANIA UKOŚNIKA (DirectorySlash)
+AddDefaultCharset UTF-8
+Options -Indexes
+DirectoryIndex index.html
+DirectorySlash Off
+
+# 2. PRZEKIEROWANIA KANONICZNE (1 SKOK 301) I ROUTING SPA (MOD_REWRITE)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 2.1. Blokada dostępu do ukrytych plików konfiguracyjnych (np. .git, .env), z wyjątkiem .well-known
+  RewriteRule (^|/)\.(?!well-known) - [F]
+
+  # 2.2. Jeden skok 301: Wymuszenie HTTPS, usunięcie WWW oraz obcięcie końcowego ukośnika jednocześnie
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\.gabinetpsychologagdansk\.pl$ [NC]
+  RewriteRule ^(.*?)/?$ https://gabinetpsychologagdansk.pl/$1 [L,R=301]
+
+  # 2.3. Usunięcie końcowego ukośnika (trailing slash) z każdej podstrony w jednym skoku 301
+  # (nie dotyczy strony głównej /)
+  RewriteCond %{REQUEST_URI} ^/(.+)/$
+  RewriteRule ^(.+)/$ https://gabinetpsychologagdansk.pl/$1 [L,R=301]
+
+  # 2.4. Bezpośrednie serwowanie dedykowanego pliku index.html dla statycznych podstron SEO (status 200 OK)
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.+)$ $1/index.html [L]
+
+  # 2.5. Jeśli fizyczny plik istnieje na dysku (obrazki, bundle JS/CSS, sitemap.xml, robots.txt), serwuj go
+  # Nigdy nie przekierowuj zapytań o zasoby w /assets/ na index.html
+  RewriteRule ^index\.html$ - [L]
+  RewriteRule ^assets/ - [L]
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # 2.6. Routing Single Page Application (React / Vite) dla dynamicznych ścieżek (np. /blog/:slug)
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# 3. KOMPRESJA W LOCIE (MOD_DEFLATE / GZIP) - Poprawa LCP i Core Web Vitals
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE font/woff
+  AddOutputFilterByType DEFLATE font/woff2
+</IfModule>
+
+# 4. PAMIĘĆ PODRĘCZNA (MOD_EXPIRES)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+
+  # HTML i XML: 0 sekund (zapobiega ładowaniu starych wersji po wdrożeniu)
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/xml "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+
+  # Zdjęcia gabinetu i grafiki
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # Zasoby kompilowane Vite (posiadają unikalne sumy kontrolne w nazwach)
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
+
+  # Czcionki webowe
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+</IfModule>
+
+# 5. NAGŁÓWKI BEZPIECZEŃSTWA ORAZ KONTROLA CACHE (MOD_HEADERS)
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "camera=(), microphone=(), payment=()"
+
+  # Kontrola świeżości szkieletu HTML, mapy strony i instrukcji indeksowania
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+  </FilesMatch>
+
+  # Długie cachowanie zasobów statycznych (niezmienne pliki builda)
+  <FilesMatch "\.(js|css|webp|png|jpg|jpeg|gif|svg|ico|woff|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

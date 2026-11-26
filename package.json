@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
+    "prerender:blog": "tsx scripts/prerender-blog.ts",
     "prebuild": "npm run generate:sitemap",
     "build": "vite build",
+    "postbuild": "npm run prerender:blog",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit"

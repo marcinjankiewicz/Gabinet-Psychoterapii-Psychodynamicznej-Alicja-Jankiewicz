@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 export default function TestimonialQuote() {
   return (
     // POPRAWKA: Usunięto select-none z sekcji, aby umożliwić zaznaczanie tekstu pacjentom
-    <section className="py-14 md:py-28 relative overflow-hidden bg-brand-bg">
+    <section className="py-10 md:py-14 lg:py-16 relative overflow-hidden bg-brand-bg">
       {/* Huge subtle quote decoration in background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[140px] sm:text-[230px] font-serif italic font-extrabold text-[#5d737e]/4 select-none pointer-events-none">
         &ldquo;&rdquo;

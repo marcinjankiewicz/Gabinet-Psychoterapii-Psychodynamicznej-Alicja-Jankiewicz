@@ -68,10 +68,10 @@ export default function OfferedServices({ onSelectService, onNavigateToService }
   };
 
   return (
-    <section id="oferta" className="pt-4 md:pt-8 pb-12 md:pb-24 max-w-[1140px] mx-auto px-6">
+    <section id="oferta" className="pt-4 md:pt-6 pb-10 md:pb-14 lg:pb-16 max-w-[1140px] mx-auto px-6">
       
       {/* Header of the section */}
-      <div className="text-center max-w-[720px] mx-auto mb-10 md:mb-16 flex flex-col items-center gap-4">
+      <div className="text-center max-w-[720px] mx-auto mb-8 md:mb-10 flex flex-col items-center gap-3.5">
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -255,7 +255,7 @@ export default function OfferedServices({ onSelectService, onNavigateToService }
                     target.src = 'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&q=80&w=800';
                   }
                 }}
-                alt="Widok przez otwarte drewniane drzwi do przytulnego, jasnego gabinetu psychoterapeutycznego z szarą sofą, poduszkami w kwiaty, rośliną w donicy i stolikiem"
+                alt="Gabinet psychoterapii indywidualnej Alicji Jankiewicz w Gdańsku Jasieniu (ul. Kartuska 356a) – jasne, spokojne wnętrze z szarą sofą i rośliną"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 referrerPolicy="no-referrer"
               />
@@ -287,7 +287,7 @@ export default function OfferedServices({ onSelectService, onNavigateToService }
                     target.src = 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&q=80&w=800';
                   }
                 }}
-                alt="Grupa psychoterapeutyczna siedząca w kręgu na krzesłach - symbol wsparcia, wspólnoty i bezpiecznej przestrzeni"
+                alt="Psychoterapia grupowa w Gdańsku – krąg krzeseł symbolizujący bezpieczną przestrzeń, wsparcie i dyskretną wymianę doświadczeń"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 referrerPolicy="no-referrer"
               />

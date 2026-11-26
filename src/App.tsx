@@ -8,7 +8,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import AboutMe from './components/AboutMe';
+import ProblemAreas from './components/ProblemAreas';
 import OfferedServices from './components/OfferedServices';
+import FirstVisitSteps from './components/FirstVisitSteps';
 import TestimonialQuote from './components/TestimonialQuote';
 import FAQ from './components/FAQ';
 import ContactSection from './components/ContactSection';
@@ -19,6 +21,7 @@ import ChildProtectionStandards from './components/ChildProtectionStandards';
 import BlogSection from './components/BlogSection';
 import BlogPostDetail from './components/BlogPostDetail'; // Dedykowany widok wpisu
 import ServiceLandingPage, { ServiceRouteSlug } from './components/ServiceLandingPage';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
 export type AppView =
   | 'home'
@@ -42,7 +45,9 @@ export default function App() {
               <>
                 <Hero onOpenBooking={() => setIsBookingOpen(true)} />
                 <AboutMe />
+                <ProblemAreas onOpenBooking={() => setIsBookingOpen(true)} />
                 <OfferedServices onSelectService={() => setIsBookingOpen(true)} />
+                <FirstVisitSteps onOpenBooking={() => setIsBookingOpen(true)} />
                 <TestimonialQuote />
                 <FAQ />
                 <ContactSection onOpenBooking={() => setIsBookingOpen(true)} />
@@ -97,6 +102,7 @@ export default function App() {
         </main>
 
         <Footer onOpenPrivacy={() => setIsPrivacyOpen(true)} />
+        <ScrollToTopButton />
 
         <BookingModal 
           isOpen={isBookingOpen} 

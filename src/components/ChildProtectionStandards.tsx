@@ -13,6 +13,7 @@ import {
   Award,
   BookMarked
 } from 'lucide-react';
+import { usePageSeo } from '../hooks/usePageSeo';
 
 interface ChildProtectionStandardsProps {
   onBackToHome?: () => void;
@@ -32,23 +33,17 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
     }
   };
 
-  // Scroll to top and set SEO metadata on load
+  usePageSeo({
+    title: 'Standardy Ochrony Małoletnich (SOM) – Gabinet Psychoterapii Gdańsk | Alicja Jankiewicz',
+    description:
+      'Standardy Ochrony Małoletnich (SOM) obowiązujące w Gabinecie Psychoterapii Psychodynamicznej Alicji Jankiewicz w Gdańsku przy ul. Kartuskiej 356a.',
+    canonicalPath: '/standardy',
+    ogType: 'website',
+  });
+
+  // Scroll to top on load
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    const title = 'Standardy Ochrony Małoletnich (SOM) – Gabinet Psychoterapii Gdańsk | Alicja Jankiewicz';
-    const description =
-      'Standardy Ochrony Małoletnich (SOM) obowiązujące w Gabinecie Psychoterapii Psychodynamicznej Alicji Jankiewicz w Gdańsku przy ul. Kartuskiej 356a.';
-    const canonical = 'https://www.gabinetpsychologagdansk.pl/standardy';
-    document.title = title;
-    const setMeta = (selector: string, attr: string, val: string) => {
-      const el = document.querySelector(selector);
-      if (el) el.setAttribute(attr, val);
-    };
-    setMeta('meta[name="description"]', 'content', description);
-    setMeta('meta[property="og:title"]', 'content', title);
-    setMeta('meta[property="og:description"]', 'content', description);
-    setMeta('meta[property="og:url"]', 'content', canonical);
-    setMeta('link[rel="canonical"]', 'href', canonical);
   }, []);
 
   const toggleChapter = (num: number) => {
@@ -250,7 +245,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
   ];
 
   return (
-    <div className="bg-brand-bg min-h-screen py-8 sm:py-16">
+    <div className="bg-brand-bg min-h-screen py-8 md:py-12">
       <div className="max-w-[1000px] mx-auto px-6">
         
         {/* Navigation back and header banner */}
@@ -270,7 +265,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
         </div>
 
         {/* Title Block */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 md:mb-10">
           <h1 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight text-brand-primary mb-4 leading-tight">
             Standardy Ochrony Dzieci przed Krzywdzeniem
           </h1>
@@ -325,9 +320,9 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                 <Sparkles size={24} />
               </div>
               <div>
-                <h3 className="text-lg font-serif font-bold text-emerald-900 mb-1.5">
+                <h2 className="text-lg font-serif font-bold text-emerald-900 mb-1.5">
                   Witaj w Prywatnej Praktyce Psychologicznej Alicja Jankiewicz!
-                </h3>
+                </h2>
                 <p className="text-sm text-emerald-800 leading-relaxed font-sans font-light">
                   Bardzo się cieszymy, że jesteś z nami. Twoje bezpieczeństwo i dobre samopoczucie są dla nas najważniejsze. Zależy nam, abyś poczuł się u nas swobodnie i pewnie, wiedząc, że troszczymy się o Twoje dobro.
                 </p>
@@ -342,7 +337,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                   1
                 </div>
                 <div>
-                  <h4 className="font-serif font-bold text-base text-brand-primary mb-1">Jesteś dla nas ważny!</h4>
+                  <h3 className="font-serif font-bold text-base text-brand-primary mb-1">Jesteś dla nas ważny!</h3>
                   <p className="text-xs sm:text-sm text-brand-muted leading-relaxed font-sans font-light">
                     Możesz tu spotkać psychoterapeutę, który jest po to, aby Ci pomagać, wspierać Cię i sprawić, byś czuł się bezpiecznie. Jeśli coś Cię niepokoi, smuci lub jeśli ktoś Cię źle traktuje, chcemy o tym wiedzieć.
                   </p>
@@ -354,7 +349,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                   2
                 </div>
                 <div>
-                  <h4 className="font-serif font-bold text-base text-brand-secondary mb-1">Bezpieczne miejsce</h4>
+                  <h3 className="font-serif font-bold text-base text-brand-secondary mb-1">Bezpieczne miejsce</h3>
                   <p className="text-xs sm:text-sm text-brand-muted leading-relaxed font-sans font-light">
                     Stworzyliśmy jasne zasady, które pomagają nam wszystkim czuć się dobrze. Szanujemy siebie nawzajem, słuchamy, rozmawiamy i wspólnie wyjaśniamy trudności. Twoje uczucia są u nas w pełni ważne.
                   </p>
@@ -366,7 +361,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                   3
                 </div>
                 <div>
-                  <h4 className="font-serif font-bold text-base text-brand-accent mb-1">Twoje prawa</h4>
+                  <h3 className="font-serif font-bold text-base text-brand-accent mb-1">Twoje prawa</h3>
                   <p className="text-xs sm:text-sm text-brand-muted leading-relaxed font-sans font-light">
                     Masz pełne prawo do szczęścia, bezpieczeństwa, szacunku i ochrony. Jeśli coś sprawia, że czujesz się niekomfortowo lub czujesz, że Twoje granice są przekraczane – powiedz nam o tym. Masz absolutne prawo być wysłuchanym.
                   </p>
@@ -378,7 +373,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                   4
                 </div>
                 <div>
-                  <h4 className="font-serif font-bold text-base text-red-950 mb-1">Brak tolerancji dla przemocy</h4>
+                  <h3 className="font-serif font-bold text-base text-red-950 mb-1">Brak tolerancji dla przemocy</h3>
                   <p className="text-xs sm:text-sm text-brand-muted leading-relaxed font-sans font-light">
                     Nie tolerujemy przemocy w żadnej formie. Jeśli doświadczysz krzywdy, powiedz o tym psychoterapeucie lub zaufanej osobie dorosłej w gabinecie. Reagujemy natychmiast!
                   </p>
@@ -390,7 +385,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                   <Lock size={18} />
                 </div>
                 <div>
-                  <h4 className="font-serif font-bold text-base text-brand-primary mb-1">Prawo do pełnej prywatności</h4>
+                  <h3 className="font-serif font-bold text-base text-brand-primary mb-1">Prawo do pełnej prywatności</h3>
                   <p className="text-xs sm:text-sm text-brand-muted leading-relaxed font-sans font-light">
                     Twoje dane osobowe oraz wszystko, o czym rozmawiasz z psychoterapeutą, są bezpieczne i chronione poufnością. Informacje o Tobie są chronione i nikt postronny nie ma do nich dostępu. Wyjątek to sytuacja, w której zagrożone byłoby Twoje zdrowie lub życie.
                   </p>
@@ -402,7 +397,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
             <div className="border border-brand-card/90 bg-brand-bg rounded-xl p-6 sm:p-8 mt-8 text-left">
               <div className="flex items-center gap-2 text-brand-primary mb-4">
                 <Phone size={20} className="stroke-[2.5]" />
-                <h4 className="font-serif font-bold text-lg">Ważne telefony zaufania i ratunkowe</h4>
+                <h2 className="font-serif font-bold text-lg">Ważne telefony zaufania i ratunkowe</h2>
               </div>
               
               <p className="text-sm text-brand-muted font-sans font-light mb-6">
@@ -415,7 +410,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                     112
                   </div>
                   <div>
-                    <h5 className="font-bold text-brand-charcoal text-sm">Pogotowie Ratunkowe</h5>
+                    <h3 className="font-bold text-brand-charcoal text-sm">Pogotowie Ratunkowe</h3>
                     <p className="text-xs text-brand-muted leading-snug">
                       Sytuacje nagłego zagrożenia zdrowia, życia lub bezpieczeństwa.
                     </p>
@@ -428,7 +423,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
                     <span className="text-[10px]">111</span>
                   </div>
                   <div>
-                    <h5 className="font-bold text-brand-charcoal text-sm">Telefon Zaufania</h5>
+                    <h3 className="font-bold text-brand-charcoal text-sm">Telefon Zaufania</h3>
                     <p className="text-xs text-brand-muted leading-snug">
                       Dla dzieci i młodzieży. Możesz porozmawiać o wszystkim anonimowo.
                     </p>
@@ -444,7 +439,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
             <div className="border bg-brand-bg rounded-xl px-5 py-4 border-brand-card flex items-center justify-between">
               <div className="flex items-center gap-2 text-brand-primary">
                 <BookMarked size={18} />
-                <span className="font-serif font-bold text-sm">Spis Rozdziałów Standardów</span>
+                <h2 className="font-serif font-bold text-sm">Spis Rozdziałów Standardów</h2>
               </div>
               <span className="text-xs text-brand-muted font-mono">12 Rozdziałów</span>
             </div>
@@ -512,7 +507,7 @@ export default function ChildProtectionStandards({ onBackToHome }: ChildProtecti
         {/* Dynamic bottom banner */}
         <div className="mt-12 bg-linear-to-b from-brand-card to-brand-card/25 rounded-2xl p-6 sm:p-8 text-center border border-brand-card/65">
           <Award className="mx-auto text-brand-secondary mb-3 stroke-[1.5]" size={36} />
-          <h4 className="font-serif font-bold text-brand-primary text-lg mb-2">Dbamy o bezpieczną przyszłość dzieci</h4>
+          <h2 className="font-serif font-bold text-brand-primary text-lg mb-2">Dbamy o bezpieczną przyszłość dzieci</h2>
           <p className="text-brand-muted max-w-xl mx-auto font-sans font-light text-xs sm:text-sm leading-relaxed mb-6">
             Zgodnie z polskim prawem (tzw. Ustawą Kamilka), dbam o to, by każda przestrzeń terapeutyczna i kontakt z terapeutą były miejscem bezpiecznym. Zapraszam również rodziców do kontaktu w razie jakichkolwiek pytań.
           </p>

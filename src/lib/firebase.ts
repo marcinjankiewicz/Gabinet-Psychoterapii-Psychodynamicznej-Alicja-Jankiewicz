@@ -1,31 +1,39 @@
-import { initializeApp } from 'firebase/app';
-import { 
-  getFirestore, 
-  collection, 
-  getDocs, 
-  addDoc, 
-  setDoc, 
-  doc, 
-  deleteDoc, 
-  query, 
-  orderBy,
-  getDocFromServer
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import {
+  getFirestore,
+  initializeFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  setDoc,
+  doc,
+  deleteDoc,
+  query,
+  getDocFromServer,
+  Firestore
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import firebaseConfig from '../../firebase-applet-config.json';
 import { BlogPost } from '../types';
 import { slugify } from './slugify';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDt63YgXqVj1TqUdZEVgwdti0TaPwOTWDA",
-  authDomain: "gentle-dreamlet-3tgzl.firebaseapp.com",
-  projectId: "gentle-dreamlet-3tgzl",
-  storageBucket: "gentle-dreamlet-3tgzl.firebasestorage.app",
-  messagingSenderId: "586384431794",
-  appId: "1:586384431794:web:98f9f867dfcbd2df2307ab"
-};
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, "ai-studio-3bf4b229-7d58-42a0-a1e4-270ff82d2242");
+function createFirestoreInstance(): Firestore {
+  try {
+    // Wymuszenie long-polling zapobiega 10-sekundowemu timeoutowi WebChannel
+    // w środowiskach z proxy, firewallami lub zagnieżdżonych iframe'ach.
+    return initializeFirestore(
+      app,
+      { experimentalForceLongPolling: true },
+      firebaseConfig.firestoreDatabaseId
+    );
+  } catch {
+    return getFirestore(app, firebaseConfig.firestoreDatabaseId);
+  }
+}
+
+export const db = createFirestoreInstance();
 export const storage = getStorage(app);
 
 /**
@@ -45,10 +53,10 @@ export async function uploadBlogImage(file: File): Promise<string> {
 // Validate connection to Firestore on initialization
 async function testConnection() {
   try {
-    await getDocFromServer(doc(db, 'test-connection-doc', 'verify'));
+    await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration or network.");
+      console.error('Please check your Firebase configuration.');
     }
   }
 }

@@ -19,14 +19,14 @@ export default function AboutMe() {
   const [activeTab, setActiveTab] = useState<TabType>('wyksztalcenie');
 
   return (
-    <section id="o-mnie" className="pt-12 md:pt-24 pb-4 md:pb-8 bg-brand-bg border-y border-brand-card/40">
+    <section id="o-mnie" className="py-10 md:py-14 lg:py-16 bg-brand-bg border-y border-brand-card/40">
       <div className="max-w-[1140px] mx-auto px-6">
         
         {/* main Grid: Introduction Story */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mb-10 md:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center mb-8 md:mb-12">
           
           {/* Photo Column */}
-          <div className="lg:col-span-5 relative flex flex-col items-center justify-center pt-4">
+          <div className="lg:col-span-5 relative flex flex-col items-center justify-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -39,7 +39,7 @@ export default function AboutMe() {
               <div className="w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-soft-lift bg-brand-card border border-brand-card/40">
                 <img
                   src="/alicjajankiewicz1.webp"
-                  alt="Alicja Jankiewicz - Psycholog i Psychoterapeuta Gdańsk"
+                  alt="Alicja Jankiewicz – psycholog i psychoterapeuta psychodynamiczny w Gdańsku Jasieniu (ul. Kartuska 356a)"
                   className="w-full h-full object-cover object-top filter brightness-[1.01] contrast-[0.99] hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
@@ -88,10 +88,10 @@ export default function AboutMe() {
               className="text-brand-muted font-sans font-light leading-relaxed flex flex-col gap-4 text-sm sm:text-base text-justify"
             >
               <p>
-                Nazywam się <strong className="text-brand-primary font-medium">Alicja Jankiewicz</strong>. Jestem doświadczonym psychologiem i psychoterapeutą psychodynamicznym. Ukończyłam całościowe, czteroletnie szkolenie z zakresu psychoterapii psychodynamicznej w Krakowskim Centrum Psychodynamicznym (KCP) – prestiżowej placówce posiadającej akredytację i rekomendację <strong className="text-brand-secondary font-medium">Polskiego Towarzystwa Psychologicznego</strong>.
+                Nazywam się <strong className="text-brand-primary font-medium">Alicja Jankiewicz</strong>. Jestem psychologiem (absolwentką psychologii klinicznej na <strong className="text-brand-primary font-medium">Uniwersytecie Gdańskim</strong>) i psychoterapeutą psychodynamicznym. Ukończyłam całościowe, czteroletnie szkolenie z zakresu psychoterapii psychodynamicznej w <strong className="text-brand-primary font-medium">Krakowskim Centrum Psychodynamicznym (KCP)</strong> – prestiżowej placówce posiadającej akredytację i rekomendację <strong className="text-brand-secondary font-medium">Polskiego Towarzystwa Psychologicznego</strong>.
               </p>
               <p>
-                W moim gabinecie w Gdańsku (dzielnica Jasień, w bliskim sąsiedztwie dzielnic Kokoszki, Ujeścisko-Łostowice oraz Piecki-Migowo) prowadzę konsultacje psychologiczne oraz psychoterapię indywidualną dla <strong className="text-brand-primary font-medium">osób dorosłych, młodzieży oraz dzieci</strong>. Moje podejście terapeutyczne ukształtowało głębokie przekonanie, że każdy człowiek – niezależnie od wieku – potrzebuje bezpiecznej, pełnej zaufania przestrzeni, by móc wypowiedzieć i zrozumieć swoje wewnętrzne konflikty, lęki czy trudne emocje.
+                W moim gabinecie w Gdańsku (dzielnica Jasień, ul. Kartuska 356a, w bliskim sąsiedztwie dzielnic Morena, Piecki-Migowo, Wrzeszcz, Oliwa, Kokoszki i Ujeścisko-Łostowice) prowadzę konsultacje psychologiczne oraz psychoterapię indywidualną dla <strong className="text-brand-primary font-medium">osób dorosłych, młodzieży oraz dzieci</strong>. Moje podejście terapeutyczne ukształtowało głębokie przekonanie, że każdy człowiek – niezależnie od wieku – potrzebuje bezpiecznej, pełnej zaufania przestrzeni, by móc wypowiedzieć i zrozumieć swoje wewnętrzne konflikty, lęki czy trudne emocje.
               </p>
               <p>
                 Jako aktywny członek{' '}
@@ -103,7 +103,7 @@ export default function AboutMe() {
                 >
                   Polskiego Towarzystwa Psychoterapii Psychodynamicznej (PTPPd)
                 </a>
-                , prowadzę procesy terapeutyczne zgodnie z najwyższymi standardami etycznymi zawodu psychoterapeuty. Swoją cykliczną pracę z dorosłymi oraz pacjentami młodszymi poddaję regularnej superwizji u certyfikowanych superwizorów Polskiego Towarzystwa Psychologicznego.
+                , prowadzę procesy terapeutyczne zgodnie z najwyższymi standardami etycznymi zawodu psychoterapeuty oraz bezwzględną <strong className="text-brand-primary font-medium">tajemnicą zawodową</strong>. Swoją pracę z dorosłymi oraz pacjentami młodszymi poddaję regularnej superwizji u certyfikowanych superwizorów Polskiego Towarzystwa Psychologicznego.
               </p>
             </motion.div>
 
@@ -111,10 +111,10 @@ export default function AboutMe() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
               <div className="p-4 bg-brand-card/25 border border-brand-card/40 rounded-xl flex flex-col gap-1.5 text-left">
                 <div className="text-brand-secondary flex items-center gap-1.5 font-medium font-serif text-sm">
-                  <ShieldCheck size={16} /> Bezpieczeństwo
+                  <ShieldCheck size={16} /> Tajemnica zawodowa
                 </div>
                 <p className="text-[11px] sm:text-xs text-brand-muted font-light leading-relaxed">
-                  Pełna poufność i profesjonalne, wolne od oceniania wsparcie w trudnych chwilach.
+                  Pełna poufność, dyskrecja i profesjonalne, wolne od oceniania wsparcie w trudnych chwilach.
                 </p>
               </div>
 

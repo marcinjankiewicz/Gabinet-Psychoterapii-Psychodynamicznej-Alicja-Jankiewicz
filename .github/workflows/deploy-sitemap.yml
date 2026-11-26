@@ -3,7 +3,7 @@ name: Update and Upload Sitemap to Seohost
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *' # Codziennie o 3:00 nad ranem
+    - cron: '0 3 * * *' # Codziennie o 3:00 nad ranem czasu UTC
 
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm install
 
       - name: Generate fresh sitemap from Firebase
         run: npm run generate:sitemap
@@ -32,7 +32,6 @@ jobs:
           cp public/sitemap.xml sitemap-dist/sitemap.xml
 
       - name: Sync sitemap.xml to Seohost FTP
-        if: ${{ secrets.FTP_SERVER != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}

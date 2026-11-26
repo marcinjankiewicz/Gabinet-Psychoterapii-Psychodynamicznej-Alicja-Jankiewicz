@@ -56,13 +56,13 @@ export default function ContactSection({ onOpenBooking }: ContactSectionProps) {
     // OPTYMALIZACJA SEO: Dodanie głównego kontenera Schema.org dla biznesu lokalnego
     <section 
       id="kontakt" 
-      className="py-10 md:py-20 max-w-[1140px] mx-auto px-6"
+      className="py-10 md:py-12 lg:py-14 max-w-[1140px] mx-auto px-6"
       itemScope 
       itemType="https://schema.org/MedicalBusiness"
     >
       {/* Ukryte znaczniki Schema dla bota Google */}
-      <meta itemProp="name" content="Alicja Jankiewicz — Psychoterapia Psychodynamiczna Gdańsk" />
-      <meta itemProp="image" content="https://www.gabinetpsychologagdansk.pl/alicjajankiewicz1.webp" />
+      <meta itemProp="name" content="Gabinet Psychoterapii Psychodynamicznej Gdańsk – Alicja Jankiewicz" />
+      <meta itemProp="image" content="https://gabinetpsychologagdansk.pl/alicjajankiewicz1.webp" />
       
       <div className="bg-brand-primary text-white rounded-3xl overflow-hidden shadow-2xl border border-brand-primary/20">
         <div className="grid grid-cols-1 lg:grid-cols-12">
@@ -79,8 +79,8 @@ export default function ContactSection({ onOpenBooking }: ContactSectionProps) {
               </p>
             </div>
 
-            {/* Direct contact info chips */}
-            <div className="flex flex-col gap-5">
+            {/* Direct contact info chips (semantyczny znacznik <address>) */}
+            <address className="not-italic flex flex-col gap-5">
               
               {/* Phone */}
               <a 
@@ -150,14 +150,27 @@ export default function ContactSection({ onOpenBooking }: ContactSectionProps) {
                   <MapPin size={18} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-accent/70">Gabinet</span>
-                  <span itemProp="streetAddress" className="text-sm sm:text-base font-semibold border-b border-transparent group-hover:border-white/50 transition-all">
-                    ul. Kartuska 356a, <span itemProp="postalCode">80-125</span> <span itemProp="addressLocality">Gdańsk</span>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-accent/70">Gabinet (Gdańsk Jasień)</span>
+                  <span className="text-sm sm:text-base font-semibold border-b border-transparent group-hover:border-white/50 transition-all">
+                    <span itemProp="streetAddress">ul. Kartuska 356a</span>, <span itemProp="postalCode">80-125</span> <span itemProp="addressLocality">Gdańsk</span>
                   </span>
                 </div>
               </a>
 
-            </div>
+              {/* Opening hours */}
+              <div className="flex items-center gap-4 w-fit">
+                <div className="p-3 bg-white/10 rounded-xl text-brand-accent">
+                  <Clock size={18} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-accent/70">Godziny przyjęć</span>
+                  <span className="text-sm sm:text-base font-semibold">
+                    Poniedziałek – Piątek, 08:00–20:00
+                  </span>
+                </div>
+              </div>
+
+            </address>
 
             <div className="text-[11px] text-white/50 font-light italic mt-4 max-w-[420px]">
               * W trakcie prowadzenia sesji nie odbieram telefonów. Najwygodniejszym sposobem umówienia wizyty jest bezpośrednia rezerwacja w kalendarzu Medfile lub wiadomość SMS.
@@ -189,9 +202,9 @@ export default function ContactSection({ onOpenBooking }: ContactSectionProps) {
 
               <div className="mt-1 border-t border-white/15 pt-5">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-sm font-serif font-semibold text-brand-accent tracking-wide">
+                  <h3 className="text-sm font-serif font-semibold text-brand-accent tracking-wide">
                     Bezpośrednia rezerwacja terminu (Medfile):
-                  </h4>
+                  </h3>
                   <span className="inline-flex items-center gap-1 text-[10px] text-white/80 bg-white/10 px-2 py-0.5 rounded-full">
                     <ShieldCheck size={11} className="text-brand-accent" />
                     24/7 Online
@@ -221,6 +234,10 @@ export default function ContactSection({ onOpenBooking }: ContactSectionProps) {
 
                   <p className="text-[11px] text-white/75 font-light leading-relaxed bg-white/5 px-3 py-2 rounded-lg border border-white/10">
                     Pozostałe opcje i formy wsparcia (psychoterapia indywidualna, pomoc w kryzysie, terapia grupowa) są dostępne po wcześniejszej rozmowie telefonicznej.
+                  </p>
+
+                  <p className="text-[11px] text-white/90 font-normal leading-relaxed bg-white/10 px-3 py-2.5 rounded-lg border border-brand-accent/30">
+                    Jeśli nie widzisz dogodnego dla siebie terminu w kalendarzu, napisz SMS lub wiadomość e-mail. Sprawdzimy, czy uda się znaleźć inne okienko w moim grafiku.
                   </p>
 
                   <motion.button

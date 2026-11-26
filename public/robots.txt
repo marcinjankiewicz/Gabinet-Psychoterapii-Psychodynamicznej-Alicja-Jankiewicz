@@ -1,5 +1,24 @@
 User-agent: *
 Allow: /
 
+# Jawne dopuszczenie botów wyszukiwarek AI (GEO)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 # Oficjalna mapa witryny zatwierdzona w Google Search Console
-Sitemap: https://www.gabinetpsychologagdansk.pl/sitemap.xml
+Sitemap: https://gabinetpsychologagdansk.pl/sitemap.xml

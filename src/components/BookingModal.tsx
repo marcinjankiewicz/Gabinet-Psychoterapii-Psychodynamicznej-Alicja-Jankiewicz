@@ -154,6 +154,18 @@ export default function BookingModal({ isOpen, onClose, preSelectedServiceId = n
               </div>
             </div>
 
+            {/* Informacja o większej dostępności terminów poza kalendarzem online */}
+            <div className="bg-brand-accent/25 border-b border-brand-accent/45 px-4 sm:px-6 py-2.5 flex items-center gap-2.5 text-xs sm:text-[13px] text-brand-primary leading-snug shrink-0">
+              <Phone size={14} className="text-brand-secondary shrink-0" />
+              <p>
+                Jeśli nie widzisz dogodnego dla siebie terminu w kalendarzu, napisz SMS (
+                <a href="tel:+48514309526" className="font-semibold underline underline-offset-2 hover:text-brand-secondary transition-colors">
+                  514 309 526
+                </a>
+                ) lub wiadomość e-mail. Sprawdzimy, czy uda się znaleźć inne okienko w moim grafiku.
+              </p>
+            </div>
+
             {/* Główny obszar terminarza Medfile */}
             <div className="relative w-full flex-1 min-h-0 bg-white overflow-hidden">
               {/* Kontener widgetu Medfile */}

@@ -1,6 +1,0 @@
-{
-  "summary":  "Plan naprawy błędu GitHub Actions przy automatycznej aktualizacji pliku sitemap.xml (synchronizacja package-lock.json z package.json dla npm ci oraz usprawnienie workflow GitHub Actions).",
-  "updatedAt":  "2026-10-25T18:24:51.636550109Z",
-  "requestFeedback":  true,
-  "userFacing":  true
-}

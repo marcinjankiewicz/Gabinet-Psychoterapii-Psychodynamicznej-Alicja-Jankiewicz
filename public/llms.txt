@@ -1,20 +1,52 @@
-# Gabinet Psychoterapii Alicja Jankiewicz w Gdańsku
+# Gabinet Psychoterapii Psychodynamicznej Gdańsk – Alicja Jankiewicz
 
-Podsumowanie informacji o prywatnej praktyce psychoterapeutycznej prowadzonej przez Alicję Jankiewicz na potrzeby indeksowania przez modele LLM i agenty AI.
+> Prywatna praktyka psychologiczna i psychoterapeutyczna prowadzona przez Alicję Jankiewicz — psychologa i psychoterapeutę psychodynamicznego. Gabinet mieści się w Gdańsku (dzielnica Jasień, ul. Kartuska 356a) i wspiera osoby dorosłe, młodzież oraz dzieci z całego Trójmiasta.
 
-## Lokalizacja gabinetu
-Gabinet psychoterapeutyczny znajduje się w Gdańsku, w dzielnicy **Jasień**, przy ulicy Kartuskiej 356a. Lokalizacja zapewnia dogodny dojazd z dzielnic: Gdańsk Jasień, Ujeścisko, Morena, Karczemki oraz z obwodnicy Trójmiasta (S6), komunikacją miejską (przystanek tramwajowy Zabornia, przystanek autobusowy Damroki) oraz darmowe miejsca parkingowe bezpośrednio przed wejściem.
+- **Oficjalna strona internetowa:** https://gabinetpsychologagdansk.pl/
+- **Nurt pracy:** Psychoterapia psychodynamiczna (indywidualna oraz grupowa), konsultacje psychologiczne, wsparcie w kryzysie emocjonalnym.
 
-## Kluczowe odnośniki
-- [Oficjalna Strona Główna](https://www.gabinetpsychologagdansk.pl/)
-- [Psychoterapia Indywidualna Gdańsk](https://www.gabinetpsychologagdansk.pl/psychoterapia-indywidualna-gdansk)
-- [Psycholog Dziecięcy i Psychoterapia Młodzieży Gdańsk](https://www.gabinetpsychologagdansk.pl/psycholog-dzieciecy-gdansk)
-- [Pomoc Psychologiczna w Kryzysie Gdańsk](https://www.gabinetpsychologagdansk.pl/pomoc-w-kryzysie-gdansk)
-- [Standardy Ochrony Małoletnich](https://www.gabinetpsychologagdansk.pl/standardy)
+## W czym pomagam (obszary pracy)
 
-## Profil praktyki i E-E-A-T
-- **Specjalista:** Alicja Jankiewicz (dyplomowany psycholog, psychoterapeuta psychodynamiczny).
-- **Kwalifikacje:** Absolwentka psychologii klinicznej na Uniwersytecie Gdańskim oraz czteroletniego szkolenia w Krakowskim Centrum Psychodynamicznym (szkoła rekomendowana przez Polskie Towarzystwo Psychologiczne).
-- **Nurt pracy:** Psychoterapia psychodynamiczna.
-- **Formy pomocy:** Psychoterapia indywidualna dorosłych, młodzieży i dzieci, interwencja kryzysowa oraz psychoterapia grupowa.
-- **Standardy:** Regularna superwizja kliniczna u certyfikowanych superwizorów PTP. Pełna zgodność z Kodeksem Etycznym Psychoterapeuty PTPPd.
+Do gabinetu mogą zgłosić się osoby doświadczające m.in.:
+- **Zaburzenia lękowe i napady paniki:** przewlekły niepokój, zamartwianie się, lęk społeczny, natrętne myśli, napięcie z ciała.
+- **Obniżony nastrój i depresja:** utrata energii i radości życia, poczucie pustki, bezradność, niska samoocena, nadmierne poczucie winy.
+- **Wypalenie zawodowe i przewlekły stres:** przeciążenie obowiązkami, perfekcjonizm, trudność w odpoczywaniu, objawy psychosomatyczne i problemy ze snem.
+- **Trudności w relacjach i stawianiu granic:** powtarzające się bolesne schematy w związkach, lęk przed bliskością lub odrzuceniem, konflikty rodzinne i interpersonalne, zaburzenia osobowości.
+- **Kryzysy życiowe i emocjonalne:** żałoba, strata, rozstanie, rozwód, nagła zmiana sytuacji życiowej lub zawodowej, trudności adaptacyjne.
+- **Wsparcie dzieci i młodzieży:** lęki szkolne i separacyjne, wycofanie, spadek nastroju, trudności w regulacji emocji, kryzysy rozwojowe i rówieśnicze oraz konsultacje dla rodziców.
+- **Psychoterapia grupowa:** bezpieczna praca nad funkcjonowaniem w relacjach interpersonalnych, komunikacją i poczuciem wycofania społecznego.
+
+## Kwalifikacje i etyka
+
+- **Specjalista:** Alicja Jankiewicz — psycholog, psychoterapeuta psychodynamiczny (ponad 10 lat doświadczenia klinicznego).
+- **Wykształcenie akademickie:** Absolwentka jednolitych studiów magisterskich z psychologii klinicznej na **Uniwersytecie Gdańskim**.
+- **Szkolenie psychoterapeutyczne:** Ukończone całościowe, 4-letnie szkolenie z zakresu psychoterapii psychodynamicznej w **Krakowskim Centrum Psychodynamicznym (KCP)** — placówce rekomendowanej przez Polskie Towarzystwo Psychologiczne (PTP).
+- **Superwizja i etyka:** Aktywny członek Polskiego Towarzystwa Psychoterapii Psychodynamicznej (PTPPd). Praca terapeutyczna jest zgodna z Kodeksem Etycznym Psychoterapeuty, objęta bezwzględną **tajemnicą zawodową** oraz poddawana regularnej superwizji u certyfikowanych superwizorów PTP i KCP.
+- **Ochrona małoletnich:** Gabinet działa w pełnej zgodności ze Standardami Ochrony Małoletnich (SOM).
+
+## Pierwsza wizyta i zasady
+
+- **Konsultacje wstępne:** Proces rozpoczyna się od 3–5 spotkań konsultacyjnych, które nie wymagają wcześniejszego przygotowania i nie zobowiązują do podjęcia długoterminowej terapii. Służą spokojnej rozmowie o trudnościach, wstępnej diagnozie psychodynamicznej i wspólnemu wyborowi formy pomocy.
+- **Regularność spotkań:** Sesje psychoterapii indywidualnej odbywają się zazwyczaj raz lub dwa razy w tygodniu o stałej, wspólnie ustalonej porze.
+- **Cennik i czas trwania:**
+  - Konsultacja indywidualna: **50 min / 200 zł**
+  - Psychoterapia indywidualna (dorośli, dzieci i młodzież): **50 min / 200 zł**
+  - Wsparcie w kryzysie emocjonalnym: **50 min / 200 zł**
+  - Psychoterapia grupowa: **czas trwania i koszt ustalane indywidualnie**
+
+## Lokalizacja i kontakt
+
+- **Adres gabinetu:** ul. Kartuska 356a (I piętro), 80-125 Gdańsk (dzielnica Gdańsk Jasień)
+- **Obszar działania:** Gdańsk (szczególnie Jasień, Morena, Piecki-Migowo, Ujeścisko-Łostowice, Wrzeszcz, Oliwa, Kokoszki, Karczemki), Sopot, Gdynia, Trójmiasto.
+- **Dojazd i parking:** Bezpłatne miejsca parkingowe przed budynkiem, szybki dojazd z obwodnicy Trójmiasta (S6), komunikacja miejska: tramwaj (przystanek Zabornia), autobus (przystanek Damroki).
+- **Telefon:** +48 514 309 526
+- **E-mail:** psycholog.jankiewicz@gmail.com
+- **Godziny przyjęć:** Poniedziałek – Piątek, 08:00–20:00
+
+### Główne podstrony serwisu
+- [Strona główna – Gabinet Psychoterapii Psychodynamicznej Gdańsk](https://gabinetpsychologagdansk.pl/) — informacje o nurcie pracy, kwalifikacjach Alicji Jankiewicz, obszarach pomocy, pierwszej wizycie, cenniku, FAQ i rezerwacji wizyty.
+- [Psychoterapia indywidualna Gdańsk](https://gabinetpsychologagdansk.pl/psychoterapia-indywidualna-gdansk) — szczegółowy opis psychoterapii psychodynamicznej dla dorosłych i młodzieży.
+- [Psycholog dziecięcy i psychoterapia młodzieży Gdańsk](https://gabinetpsychologagdansk.pl/psycholog-dzieciecy-gdansk) — wsparcie psychologiczne dzieci, nastolatków i konsultacje rodzicielskie.
+- [Pomoc psychologiczna w kryzysie Gdańsk](https://gabinetpsychologagdansk.pl/pomoc-w-kryzysie-gdansk) — krótkoterminowe wsparcie w żałobie, po rozstaniu, w nagłych zmianach i przeciążeniu.
+- [Blog psychologiczny – Przestrzeń Refleksji](https://gabinetpsychologagdansk.pl/blog) — artykuły edukacyjne o psychoterapii, zdrowiu emocjonalnym, relacjach i wspieraniu dzieci.
+- [Standardy Ochrony Małoletnich (SOM)](https://gabinetpsychologagdansk.pl/standardy) — procedury bezpieczeństwa i ochrony dzieci w gabinecie.
